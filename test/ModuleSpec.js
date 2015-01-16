@@ -9,4 +9,8 @@ describe('authormodel', function() {
     expect(authormodel.AuthoringUnit).to.be.defined;
   });
 
+  it("Should export AuthoringCollection", function() {
+    expect(authormodel.AuthoringCollection).to.be.defined;
+  });
+
 });

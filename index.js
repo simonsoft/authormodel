@@ -1,6 +1,8 @@
 
-var AuthoringUnit = require('./AuthoringUnit');
+// select impl
+var AuthoringCollection = require('./AuthoringCollectionBackbone');
 
 module.exports = {
-  AuthoringUnit: AuthoringUnit
+  AuthoringUnit: AuthoringCollection.model,
+  AuthoringCollection: AuthoringCollection
 };
