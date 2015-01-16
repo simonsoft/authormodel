@@ -1,7 +1,17 @@
 
 var AuthoringUnit = function(attributes, options) {
 
-  this.attributes = attributes;
+  var that = this;
+
+  that.attributes = attributes;
+
+  that.set = function(key, value) {
+    that.attributes[key] = value;
+  };
+
+  that.get = function(key) {
+    return that.attributes[key];
+  }
 
 };
 

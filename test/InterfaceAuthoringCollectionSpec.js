@@ -6,23 +6,15 @@ var interfaceTest = function(impl) {
   var AuthoringCollection = require(impl);
   var AuthoringUnit = AuthoringCollection.model;
 
-  describe(impl + " static setup", function() {
-
-    // I'm not so sure we'd want this, as we might have a lot of different units in a collection
-    // (all of them implementing an AuthorUnit interface)
-    xit("Should declare the type of model it accepts", function() {
-      expect(AuthoringUnit).to.exist;
-    });
-
-  });
-
   describe(impl + " initialization without options", function() {
 
+    // TODO is this really a good idea? Would probably be better if add only accepts proper authoring units
     it("Should initialize with a preconfigured model type", function() {
       var units = new AuthoringCollection();
       var added = units.add({type: 'text'});
       expect(added).to.exist;
       expect(added.attributes).to.exist;
+      expect(added.attributes.attributes).to.be.undefined;
       expect(added.attributes.type).to.be.equal('text');
     });
 
