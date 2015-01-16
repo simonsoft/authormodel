@@ -1,6 +1,14 @@
 
 var AuthoringUnit = function(attributes, options) {
 
+  if (typeof attributes != 'object') {
+    throw "AuthoringUnit must be instantiated with initial attributes";
+  }
+
+  if (attributes.hasOwnProperty('attributes')) {
+    throw "AuthoringUnit disallows use of an 'attributes' attribute";
+  }
+
   var that = this;
 
   that.attributes = attributes;

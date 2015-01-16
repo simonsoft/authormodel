@@ -16,7 +16,7 @@ describe("AuthoringCollectionMonitor", function() {
     };
     var collection = new authormodel.AuthoringCollection();
     var monitor = new Monitor(collection, console);
-    var unit1 = new authormodel.AuthoringUnit();
+    var unit1 = new authormodel.AuthoringUnit({type: 'test'});
     collection.add(unit1);
     expect(logged.length).to.be.equal(1);
   });
