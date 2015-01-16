@@ -3,7 +3,10 @@
 var AuthoringUnit = require('./AuthoringUnitBackbone');
 var AuthoringCollection = require('./AuthoringCollectionBackbone');
 
+var AuthoringCollectionMonitor = require('./AuthoringCollectionMonitor');
+
 module.exports = {
   AuthoringUnit: AuthoringUnit,
-  AuthoringCollection: AuthoringCollection
+  AuthoringCollection: AuthoringCollection,
+  AuthoringCollectionMonitor: AuthoringCollectionMonitor
 };

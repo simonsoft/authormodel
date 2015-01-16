@@ -4,7 +4,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 
-var AuthorCollectionMonitor = function(collection, console) {
+var AuthorCollectionMonitor = function(options) {
 
   this.initialize.apply(this, arguments);
 
@@ -12,13 +12,15 @@ var AuthorCollectionMonitor = function(collection, console) {
 
 _.extend(AuthorCollectionMonitor.prototype, Backbone.Events, {
 
-  initialize: function(collection, console) {
-    this.console = console;
-    this.listenTo(collection, 'add', this.onAdd.bind(this));
+  initialize: function(options) {
+    console.assert(!!options.collection);
+    console.assert(!!options.logger);
+    this.logger = options.logger;
+    this.listenTo(options.collection, 'add', this.onAdd.bind(this));
   },
 
   onAdd: function(ev) {
-    this.console.log('add', ev);
+    this.logger.log('add:', ev);
   }
 
 });
