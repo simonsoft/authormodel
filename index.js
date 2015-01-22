@@ -1,9 +1,9 @@
 
 // select impl
-var AuthoringUnit = require('./AuthoringUnitBackbone');
-var AuthoringCollection = require('./AuthoringCollectionBackbone');
+var AuthoringUnit = require('./unit/AuthoringUnitBackbone');
+var AuthoringCollection = require('./collection/AuthoringCollectionBackbone');
 
-var AuthoringCollectionMonitor = require('./AuthoringCollectionMonitor');
+var AuthoringCollectionMonitor = require('./collection/AuthoringCollectionMonitor');
 
 var ActionContext = require('./actioncontext/ActionContext');
 
