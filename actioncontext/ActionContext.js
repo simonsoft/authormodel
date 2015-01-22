@@ -8,6 +8,6 @@ module.exports = function () {
 
   that.get = function(key) {
     return attributes[key];
-  }
+  };
 
 };
