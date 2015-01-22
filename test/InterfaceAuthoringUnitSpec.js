@@ -2,9 +2,9 @@
 var ex = require('chai').expect;
 var expect = require('expectations'); // for jasmine syntax
 
-var interfaceTest = function(impl) {
+var interfaceTest = function(impl, required) {
 
-  var AuthoringUnit = impl;
+  var AuthoringUnit = required;
 
   describe(impl + " AuthoringUnit", function() {
 
@@ -57,5 +57,5 @@ var interfaceTest = function(impl) {
 
 };
 
-interfaceTest(require('../unit/AuthoringUnitBackbone'));
-interfaceTest(require('../unit/AuthoringUnit'));
+interfaceTest('(backbone)', require('../unit/AuthoringUnitBackbone'));
+interfaceTest('(standalone)', require('../unit/AuthoringUnit'));
