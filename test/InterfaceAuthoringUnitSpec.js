@@ -4,7 +4,7 @@ var expect = require('expectations'); // for jasmine syntax
 
 var interfaceTest = function(impl) {
 
-  var AuthoringUnit = require(impl);
+  var AuthoringUnit = impl;
 
   describe(impl + " AuthoringUnit", function() {
 
@@ -57,5 +57,5 @@ var interfaceTest = function(impl) {
 
 };
 
-interfaceTest('../unit/AuthoringUnitBackbone');
-interfaceTest('../unit/AuthoringUnit');
+interfaceTest(require('../unit/AuthoringUnitBackbone'));
+interfaceTest(require('../unit/AuthoringUnit'));

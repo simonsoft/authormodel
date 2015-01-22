@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 
 var interfaceTest = function(impl) {
 
-  var AuthoringCollection = require(impl);
+  var AuthoringCollection = impl;
   var AuthoringUnit = require('../unit/AuthoringUnitBackbone');
 
   describe(impl + " initialization without options", function() {
@@ -88,4 +88,4 @@ var interfaceTest = function(impl) {
 
 };
 
-interfaceTest('../collection/AuthoringCollectionBackbone');
+interfaceTest(require('../collection/AuthoringCollectionBackbone'));
