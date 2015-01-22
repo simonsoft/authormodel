@@ -5,7 +5,7 @@ describe('ActionContext', function() {
     expect(context.attributes).to.exist();
   });
 
-  it('Has get and set methods', function() {
+  xit('Has get and set methods', function() {
 
   });
 
