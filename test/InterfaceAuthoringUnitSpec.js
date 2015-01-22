@@ -57,5 +57,5 @@ var interfaceTest = function(impl) {
 
 };
 
-interfaceTest('../AuthoringUnitBackbone');
-interfaceTest('../AuthoringUnit');
+interfaceTest('../unit/AuthoringUnitBackbone');
+interfaceTest('../unit/AuthoringUnit');
