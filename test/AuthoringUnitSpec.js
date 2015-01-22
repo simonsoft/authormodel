@@ -1,7 +1,7 @@
 
 var expect = require('chai').expect;
 
-var AuthoringUnit = require('../AuthoringUnit');
+var AuthoringUnit = require('../unit/AuthoringUnit');
 
 describe("AuthoringUnit", function() {
 

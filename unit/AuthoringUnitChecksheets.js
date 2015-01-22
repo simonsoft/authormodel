@@ -1,7 +1,7 @@
 
 // This impl doesn work in unit tests because it is bundled with code that require jQuery etc
 
-var CheckDetails = require('../authoreditor/com.yolean.checksheets/CheckDetails');
+var CheckDetails = require('../../editor-se.yolean.checksheets/CheckDetails');
 
 var AuthoringUnit = CheckDetails.Model;
 
