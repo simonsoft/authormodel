@@ -1,12 +1,13 @@
 module.exports = function () {
+  var o = this;
 
   var attributes = {};
 
-  that.set = function(key, value) {
+  o.set = function(key, value) {
     attributes[key] = value;
   };
 
-  that.get = function(key) {
+  o.get = function(key) {
     return attributes[key];
   };
 

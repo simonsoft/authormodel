@@ -1,18 +1,14 @@
 
+var expect = require('chai').expect;
+
+var ActionContext = require('../actioncontext/ActionContext');
+
 describe('ActionContext', function() {
 
-  it('Carries context as transferrable state', function() {
-    expect(context.attributes).to.exist();
-  });
-
-  xit('Has get and set methods', function() {
-
-  });
-
-  xit('Doesn\'t really define the attributes that uniteditors are expected to set', function() {
-  });
-
-  xit('Doesn\'t really have any defined logic yet', function() {
+  it('Has get and set methods for unmodelled properties', function() {
+    var context = new ActionContext();
+    expect(context.set).to.be.a('function');
+    expect(context.get).to.be.a('function');
   });
 
 });
