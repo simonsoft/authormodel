@@ -12,4 +12,12 @@ module.exports = function(o) {
     return attributes[key];
   };
 
+  getUnitEditor = function () {
+    return attributes.unitEditor;
+  };
+
+  setUnitEditor = function (unitEditor) {
+    attributes.unitEditor = unitEditor;
+  };
+
 };
