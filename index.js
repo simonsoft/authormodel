@@ -1,7 +1,7 @@
 
 // select impl
 var AuthoringUnit = require('./unit/AuthoringUnitBackbone');
-var AuthoringCollection = require('./collection/AuthoringCollectionBackbone');
+var AuthoringCollection = require('./collection/AuthoringCollectionSubset');
 
 var AuthoringCollectionMonitor = require('./collection/AuthoringCollectionMonitor');
 

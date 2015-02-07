@@ -89,3 +89,4 @@ var interfaceTest = function(impl, required) {
 };
 
 interfaceTest('(backbone)', require('../collection/AuthoringCollectionBackbone'));
+interfaceTest('(collection-subset)', require('../collection/AuthoringCollectionSubset'));
