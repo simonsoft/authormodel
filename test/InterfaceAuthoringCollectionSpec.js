@@ -86,6 +86,26 @@ var interfaceTest = function(impl, required) {
 
   });
 
+  describe(impl + " unit move", function() {
+
+    it("Should mark the original as deleted and create a clone unit", function() {
+
+    });
+
+    it("Should reference from the new to the copy source", function() {
+
+    });
+
+    xit("Should reference from the deleted to the copy target (maybe, but there could be many)", function() {
+
+    });
+
+    xit("Should reference with timestamps?", function() {
+
+    });
+
+  });
+
 };
 
 interfaceTest('(backbone)', require('../collection/AuthoringCollectionBackbone'));
