@@ -1,3 +1,6 @@
+/**
+ * Logs significant authoring events, with zero effect on editing.
+ */
 
 // I wanted a plain backbone object with neither Model nor View characteristics
 
