@@ -22,4 +22,12 @@ describe('ActionContext', function() {
     expect(context.getUnitEditor()).to.equal(uniteditor);
   });
 
+  xit('#addAction', function() {
+
+  });
+
+  xit('#filterActions takes a predicate function and removes the actions for which false is returned', function() {
+
+  });
+
 });

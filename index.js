@@ -3,7 +3,9 @@
 var AuthoringUnit = require('./unit/AuthoringUnitBackbone');
 var AuthoringCollection = require('./collection/AuthoringCollectionSubset');
 
-var AuthoringCollectionMonitor = require('./collection/AuthoringCollectionMonitor');
+var AuthoringMonitor = require('./collection/AuthoringMonitor');
+// deprecated name, looks like a collection impl
+var AuthoringCollectionMonitor = AuthoringMonitor;
 
 var ActionContext = require('./actioncontext/ActionContext');
 

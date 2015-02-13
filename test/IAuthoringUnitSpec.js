@@ -2,11 +2,11 @@
 var ex = require('chai').expect;
 var expect = require('expectations'); // for jasmine syntax
 
-var interfaceTest = function(impl, required) {
+module.exports = function interfaceSpec(required) {
 
   var AuthoringUnit = required;
 
-  describe(impl + " AuthoringUnit", function() {
+  describe("AuthoringUnit", function() {
 
     it("Should require an initial attributes object", function() {
       expect(function() {
@@ -34,7 +34,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + " #set", function() {
+  describe("#set", function() {
 
     it("Should set the corresponding attribute value", function() {
       var unit1 = new AuthoringUnit({type: 'text'});
@@ -45,7 +45,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + " #get", function() {
+  describe("#get", function() {
 
     it("Should get the corresponding attribute value", function() {
       var unit1 = new AuthoringUnit({type: 'some'});
@@ -56,6 +56,3 @@ var interfaceTest = function(impl, required) {
   });
 
 };
-
-interfaceTest('(backbone)', require('../unit/AuthoringUnitBackbone'));
-interfaceTest('(standalone)', require('../unit/AuthoringUnit'));

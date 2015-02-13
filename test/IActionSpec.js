@@ -1,7 +1,16 @@
+'use strict';
 
-module.exports = function interfaceTest(impl, required) {
+var expect = require('chai').expect;
+
+module.exports = function interfaceSpec(required) {
 
   describe("Is a Command pattern handle passed through ActionContext to UI that might trigger actions", function() {
+
+    it("Is a constructor", function() {
+      expect(required).to.be.a('function');
+      expect(required.constructor).to.exist();
+      expect(required.constructor.name).to.match(/^[A-Z].+/);
+    });
 
   });
 

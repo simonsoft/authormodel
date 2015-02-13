@@ -1,7 +1,7 @@
 
 var expect = require('chai').expect;
 
-var Monitor = require('../collection/AuthoringCollectionMonitor');
+var Monitor = require('../collection/AuthoringMonitor');
 
 var authormodel = require('../');
 

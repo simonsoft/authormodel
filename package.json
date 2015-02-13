@@ -1,5 +1,8 @@
 {
   "name": "authormodel",
   "version": "0.0.1",
-  "main": "./index"
+  "main": "./index",
+  "scripts": {
+    "test": "../node_modules/.bin/mocha"
+  }
 }

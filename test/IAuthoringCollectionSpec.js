@@ -1,12 +1,13 @@
+'use strict';
 
 var expect = require('chai').expect;
 
-var interfaceTest = function(impl, required) {
+module.exports = function interfaceSpec(required) {
 
   var AuthoringCollection = required;
   var AuthoringUnit = require('../unit/AuthoringUnitBackbone');
 
-  describe(impl + " initialization without options", function() {
+  describe("initialization without options", function() {
 
     // TODO is this really a good idea? Would probably be better if add only accepts proper authoring units
     xit("Should initialize with a preconfigured model type", function() {
@@ -26,7 +27,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + "instantiation with initial models", function() {
+  describe("instantiation with initial models", function() {
 
     // This is because we don't want to specify the type of model (at least not yet)
     // And we don't want the collection to create default a no-behavior model like Backbone does
@@ -41,7 +42,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + " add", function() {
+  describe("add", function() {
 
     it("Should only allow actual models, not standalone attribute objects", function() {
       var units = new AuthoringCollection();
@@ -61,7 +62,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + " essential change events", function() {
+  describe("essential change events", function() {
 
     it("Should emit 'add'", function() {
       var events = [];
@@ -86,7 +87,7 @@ var interfaceTest = function(impl, required) {
 
   });
 
-  describe(impl + " unit move", function() {
+  describe("unit move", function() {
 
     it("Should mark the original as deleted and create a clone unit", function() {
 
@@ -107,6 +108,3 @@ var interfaceTest = function(impl, required) {
   });
 
 };
-
-interfaceTest('(backbone)', require('../collection/AuthoringCollectionBackbone'));
-interfaceTest('(collection-subset)', require('../collection/AuthoringCollectionSubset'));
