@@ -52,15 +52,15 @@ module.exports = function interfaceSpec(required) {
 
     });
 
-    it("Modified the authoringCollection", function() {
+    it("Actually modifies the authoringCollection", function() {
 
     });
 
-    xit("Sets isPreview on added models, but what does it do to modify?", function() {
+    xit("But sets isPreview on added models", function() {
 
     });
 
-    xit("Do we have a transaction+rollback concept, or do w")
+    xit("Do we have a transaction+rollback concept, or do w (ehhh, what did I think here?)");
 
     it("Returns a *preview* object", function() {
 
