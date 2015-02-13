@@ -14,7 +14,6 @@ module.exports = function interfaceSpec(required) {
 
   it("is a constructor", function() {
     expect(ContentModel).to.be.a('function');
-    expect(ContentModel.constructor.name).to.equal('ContentModel');
   });
 
   describe("#getView", function() {
