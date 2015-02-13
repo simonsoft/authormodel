@@ -56,7 +56,7 @@ module.exports = function interfaceSpec(required) {
 
     });
 
-    xit("But sets isPreview on added models", function() {
+    xit("But sets ~~isPreview~~preview on added models", function() {
 
     });
 
