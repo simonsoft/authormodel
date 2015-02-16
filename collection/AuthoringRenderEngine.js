@@ -6,3 +6,7 @@ removes and creates for unit changes.
 
 Will probably extracted from editor-se.yolean.checksheets.
 **/
+
+module.exports = function AuthoringRenderEngine() {
+
+};
