@@ -2,6 +2,22 @@
 
 var expect = require('chai').expect;
 
+// Deps
+var bev = require('bev');
+var AuthoringUnit = require('../').AuthoringUnit;
+
+// Mocks
+var Editor1 = bev.mixin(function() {
+
+});
+
+var ContentModel = function MockContentModel() {
+  this.getView = function(au) {
+    return new Editor1(au);
+  }
+};
+
+
 module.exports = function interfaceSpec(required) {
 
   describe("Handle unit add", function() {
