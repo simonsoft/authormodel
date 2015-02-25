@@ -1,6 +1,6 @@
 {
   "name": "authormodel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache License 2.0",
   "main": "./index",
   "scripts": {
@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "backbone": "^1.1.2",
+    "bev": "^1.0.0",
     "chai": "^2.1.0",
     "collection-subset": "^0.1.4",
-    "underscore": "^1.8.2"
+    "underscore": "^1.8.2",
+    "simple-mock": "^0.2.8"
   }
 }
