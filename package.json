@@ -13,5 +13,8 @@
     "collection-subset": "^0.1.4",
     "underscore": "^1.8.2",
     "simple-mock": "^0.2.8"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1"
   }
 }
