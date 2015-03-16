@@ -9,9 +9,9 @@
   "dependencies": {
     "bev": "^1.0.0",
     "chai": "^2.1.0",
-    "simple-mock": "^0.2.8",
+    "collection-subset": "^0.2.2",
     "underscore": "^1.8.2",
-    "yobo": "^0.1.0"
+    "simple-mock": "^0.2.8"
   },
   "devDependencies": {
     "mocha": "^2.2.1"

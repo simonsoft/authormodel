@@ -14,5 +14,6 @@ module.exports = {
   AuthoringCollection: AuthoringCollection,
   AuthoringCollectionMonitor: AuthoringCollectionMonitor,
   ActionContext: ActionContext,
+  // https://github.com/Reposoft/bmc, https://github.com/Reposoft/collection-subset/issues/4
   Backbone: require('./unit/BackboneExport')
 };
