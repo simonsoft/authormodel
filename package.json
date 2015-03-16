@@ -10,7 +10,7 @@
     "backbone": "^1.1.2",
     "bev": "^1.0.0",
     "chai": "^2.1.0",
-    "collection-subset": "^0.1.4",
+    "collection-subset": "^0.2.1",
     "underscore": "^1.8.2",
     "simple-mock": "^0.2.8"
   },
