@@ -1,5 +1,5 @@
 
-var Backbone = require('backbone');
+var Backbone = require('../unit/BackboneExport');
 
 module.exports = Backbone.Collection.extend({
 

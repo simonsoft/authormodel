@@ -1,5 +1,5 @@
 
-var Backbone = require('backbone');
+var Backbone = require('./BackboneExport');
 
 var AuthoringUnit = Backbone.Model.extend({
 

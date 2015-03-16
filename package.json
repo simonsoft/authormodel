@@ -7,7 +7,6 @@
     "test": "node_modules/.bin/mocha"
   },
   "dependencies": {
-    "backbone": "^1.1.2",
     "bev": "^1.0.0",
     "chai": "^2.1.0",
     "simple-mock": "^0.2.8",

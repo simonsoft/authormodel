@@ -13,5 +13,6 @@ module.exports = {
   AuthoringUnit: AuthoringUnit,
   AuthoringCollection: AuthoringCollection,
   AuthoringCollectionMonitor: AuthoringCollectionMonitor,
-  ActionContext: ActionContext
+  ActionContext: ActionContext,
+  Backbone: require('./unit/BackboneExport')
 };
