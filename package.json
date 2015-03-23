@@ -10,9 +10,9 @@
     "backbone": "^1.1.2",
     "bev": "^1.0.0",
     "chai": "^2.1.0",
-    "collection-subset": "^0.2.1",
+    "simple-mock": "^0.2.8",
     "underscore": "^1.8.2",
-    "simple-mock": "^0.2.8"
+    "yobo": "^0.1.0"
   },
   "devDependencies": {
     "mocha": "^2.2.1"
