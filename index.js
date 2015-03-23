@@ -9,11 +9,16 @@ var AuthoringCollectionMonitor = AuthoringMonitor;
 
 var ActionContext = require('./actioncontext/ActionContext');
 
+var yobo = require('./unit/BackboneExport');
+
 module.exports = {
   AuthoringUnit: AuthoringUnit,
   AuthoringCollection: AuthoringCollection,
   AuthoringCollectionMonitor: AuthoringCollectionMonitor,
   ActionContext: ActionContext,
-  // https://github.com/Reposoft/bmc, https://github.com/Reposoft/collection-subset/issues/4
-  Backbone: require('./unit/BackboneExport')
+
+  // Reuse the same libs downstream, mainly to avoid duplication in Webpack bundles
+  // Also important to avoid Backbone's wrapping of models, but quite irrelevant because AuthoringUnit is already subclassing the expected Model
+  Backbone: yobo.Backbone,
+  _: yobo._
 };

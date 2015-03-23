@@ -1,7 +1,7 @@
 
-var Backbone = require('../unit/BackboneExport');
+var yobo = require('../unit/BackboneExport').Backbone;
 
-module.exports = Backbone.Collection.extend({
+module.exports = yobo.Collection.extend({
 
   // never shuffle authoring collection
   comparator: false,

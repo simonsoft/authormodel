@@ -1,7 +1,7 @@
 
-var Backbone = require('./BackboneExport');
+var yobo = require('./BackboneExport');
 
-var AuthoringUnit = Backbone.Model.extend({
+var AuthoringUnit = yobo.Model.extend({
 
   initialize: function(attributes, options) {
     if (typeof attributes != 'object') {
