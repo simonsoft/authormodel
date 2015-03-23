@@ -1,18 +1,16 @@
 {
   "name": "authormodel",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "license": "Apache License 2.0",
   "main": "./index",
   "scripts": {
     "test": "node_modules/.bin/mocha"
   },
   "dependencies": {
-    "backbone": "^1.1.2",
     "bev": "^1.0.0",
     "chai": "^2.1.0",
-    "collection-subset": "^0.2.1",
-    "underscore": "^1.8.2",
-    "simple-mock": "^0.2.8"
+    "simple-mock": "^0.2.8",
+    "yobo": "^0.1.1"
   },
   "devDependencies": {
     "mocha": "^2.2.1"

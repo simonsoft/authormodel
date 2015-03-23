@@ -1,7 +1,7 @@
 
-var yobo = require('../unit/BackboneExport').Backbone;
+var yobo = require('yobo');
 
-module.exports = yobo.Collection.extend({
+var Collection = yobo.Collection.extend({
 
   // never shuffle authoring collection
   comparator: false,
@@ -12,7 +12,13 @@ module.exports = yobo.Collection.extend({
     if (!models.hasOwnProperty('attributes')) {
       throw "Only model instances can be added, not attribute objects";
     }
-    return Backbone.Collection.prototype.add.apply(this, arguments);
+    return yobo.Collection.prototype.add.apply(this, arguments);
   }
 
 });
+
+Collection.mixin(yobo.mixins.subset);
+
+Collection.mixin(require('./OrderedAddMixin'));
+
+module.exports = Collection;
