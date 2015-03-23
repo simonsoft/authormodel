@@ -3,6 +3,9 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
 
+  // never shuffle authoring collection
+  comparator: false,
+
   add: function(models, options) {
     // TODO when we get test coverage for array this is obviously going to fail
     // but then we should try to find a better way to restrict this
