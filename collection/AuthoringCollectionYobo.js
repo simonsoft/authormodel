@@ -12,7 +12,7 @@ var Collection = yobo.Collection.extend({
     if (!models.hasOwnProperty('attributes')) {
       throw "Only model instances can be added, not attribute objects";
     }
-    return Collection.prototype.add.apply(this, arguments);
+    return yobo.Collection.prototype.add.apply(this, arguments);
   }
 
 });
