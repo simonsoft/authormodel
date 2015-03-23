@@ -4,8 +4,9 @@
 
 // I wanted a plain backbone object with neither Model nor View characteristics
 
-var _ = require('underscore');
-var Backbone = require('backbone');
+var yobo = require('yobo');
+var _ = yobo._;
+var Backbone = yobo.Backbone;
 
 var AuthorCollectionMonitor = function(options) {
 
