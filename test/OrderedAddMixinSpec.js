@@ -36,7 +36,7 @@ describe("Collection order", function() {
     var m3 = asModel({id: 't3'});
 
     it("First argument is the new model, second argument is the reference model", function() {
-      c.addAfter(m3, m2);
+      c.addAfter(m3, m1);
     });
 
     it("Inserts the new model below the reference model in the collection", function() {

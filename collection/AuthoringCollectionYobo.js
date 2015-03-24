@@ -1,6 +1,7 @@
 
 var yobo = require('yobo');
 
+// Essential that we extend first, before we modify the prototype
 var Collection = yobo.Collection.extend({
 
   // never shuffle authoring collection
@@ -19,6 +20,22 @@ var Collection = yobo.Collection.extend({
 
 Collection.mixin(yobo.mixins.subset);
 
-Collection.mixin(require('./OrderedAddMixin'));
+var orderedAdd = require('./OrderedAddMixin');
+Collection.mixin(orderedAdd);
+
+// Needed because subset isn't a real collection
+var subset = Collection.prototype.subset;
+var subsetWhere = Collection.prototype.subsetWhere;
+var patchSubsetOrderedAdd = function(prop) {
+  var fn = Collection.prototype[prop];
+  Collection.prototype[prop] = function() {
+    var superset = this;
+    var s = fn.apply(superset, arguments);
+    s.addAfter = superset.addAfter.bind(this);
+    return s;
+  };
+};
+patchSubsetOrderedAdd('subset');
+patchSubsetOrderedAdd('subsetWhere');
 
 module.exports = Collection;

@@ -2,6 +2,8 @@
 
 var expect = require('chai').expect;
 
+var mocks = require('simple-mock');
+
 module.exports = function interfaceSpec(required) {
 
   var AuthoringCollection = required;
@@ -59,6 +61,42 @@ module.exports = function interfaceSpec(required) {
       var u = new AuthoringUnit({type: 'text'});
       expect(units.add(u)).to.equal(u);
     });
+
+  });
+
+  describe("addAfter", function() {
+
+    it("Should be doable on subset", function() {
+      var units = new AuthoringCollection();
+      expect(units.addAfter).to.be.a('function');
+      var group = units.subset(function() {});
+      expect(group.addAfter).to.be.a('function');
+      var group2 = units.subsetWhere({});
+      expect(group2.addAfter).to.be.a('function');
+    });
+
+    it("Should insert after", function() {
+      var units = new AuthoringCollection();
+      var u0 = units.add(new AuthoringUnit({id: '0a', type: 'title'}));
+      var u1 = units.add(new AuthoringUnit({id: '0b', type: 'p'}));
+      var u1 = units.add(new AuthoringUnit({id: '09', type: 'p'}));
+      var u2 = units.add(new AuthoringUnit({id: '05', type: 'p'}));
+      var group = units.subsetWhere({type:'p'});
+      expect(group.pluck('id')).to.deep.equal(['0b','09','05']);
+      var u3 = group.addAfter(new AuthoringUnit({id: '10', type:'p'}), u1);
+      expect(group.pluck('id')).to.deep.equal(['0b','09','10','05']);
+    });
+
+    it("Should set reference to previous", function() {
+      var units = new AuthoringCollection();
+      var u1 = units.add(new AuthoringUnit({id: '01', type: 'p'}));
+      var u2 = units.addAfter(new AuthoringUnit({id: '02', type: 'p'}), u1);
+      expect(u2.get('previous')).to.equal('01'); // TODO attribute value with CMS spec
+    });
+
+  });
+
+  describe("addFirst", function() {
 
   });
 

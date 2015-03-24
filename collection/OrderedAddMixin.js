@@ -9,14 +9,17 @@ module.exports = {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    this.add(newModel, {at:ix});
+    var added = this.add(newModel, {at:ix+1});
+    added.set('previous', referenceModel.id);
+    return added;
   },
 
   addFirst: function addFirst(newModel) {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    this.add(newModel, {at:0});
+    var added = this.add(newModel, {at:0});
+    return added;
   }
 
 };
