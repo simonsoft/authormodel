@@ -94,9 +94,19 @@ module.exports = function interfaceSpec(required) {
       expect(u2.get('previous')).to.equal('01'); // TODO attribute value with CMS spec
     });
 
+    it("Should execute immerse function", function() {
+      var units = new AuthoringCollection();
+      var u1 = units.add(new AuthoringUnit({id: '0b', type: 'p'}));
+      var group = units.subsetWhere(function() {return true;}, function(u) { u.set('section','x'); });
+      var u2 = group.addAfter(new AuthoringUnit({id: '0c', type:'p'}), u1);
+      expect(u2.get('section')).to.equal('x');
+    });
+
   });
 
   describe("addFirst", function() {
+
+    xit("Roughly the same specs as addAfter, but maybe we'll deprecate addFirst and require use of meta units");
 
   });
 
