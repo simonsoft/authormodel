@@ -32,6 +32,7 @@ var patchSubsetOrderedAdd = function(prop) {
     var superset = this;
     var s = fn.apply(superset, arguments);
     s.addAfter = superset.addAfter.bind(this);
+    s.addFirst = superset.addFirst.bind(this);
     return s;
   };
 };
