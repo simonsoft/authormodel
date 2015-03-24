@@ -1,6 +1,7 @@
 
 var yobo = require('yobo');
 
+// Essential that we extend first, before we modify the prototype
 var Collection = yobo.Collection.extend({
 
   // never shuffle authoring collection
@@ -19,6 +20,35 @@ var Collection = yobo.Collection.extend({
 
 Collection.mixin(yobo.mixins.subset);
 
-Collection.mixin(require('./OrderedAddMixin'));
+var orderedAdd = require('./OrderedAddMixin');
+Collection.mixin(orderedAdd);
+
+// Needed because subset isn't a real collection
+var subset = Collection.prototype.subset;
+var subsetWhere = Collection.prototype.subsetWhere;
+var patchSubsetOrderedAdd = function(subsetFnProp) {
+  var subsetFn = Collection.prototype[subsetFnProp];
+  // We could probably do this a lot smarter by using a proxy as context to subset add, but the force wasn't strong with me now
+  Collection.prototype[subsetFnProp] = function() {
+    var superset = this;
+    var subset = subsetFn.apply(superset, arguments);
+    subset.immerse = subset.immerse || function(model) { // yobo should define this
+      var immerse = this._subset_immerse;
+      console.assert(!!immerse, 'Need subset to suppoert immerse-only fn for composition with addAfter');
+      immerse(model);
+    };
+    subset.addAfter = function() {
+      this.immerse(arguments[0]);
+      return superset.addAfter.apply(superset, arguments);
+    };
+    subset.addFirst = function() {
+      this.immerse(arguments[0]);
+      return superset.addFirst.apply(superset, arguments);
+    };
+    return subset;
+  };
+};
+patchSubsetOrderedAdd('subset');
+patchSubsetOrderedAdd('subsetWhere');
 
 module.exports = Collection;
