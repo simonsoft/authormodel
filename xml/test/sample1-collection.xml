@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sed:authoring
+    xmlns:sed="http://www.simonsoft.se/namespace/editor">
+  <sed:unit sed:id="0006" sed:type="p">
+    <sed:content>Text with <emph>inline</emph> <unit>provocation</unit> &gt;0.</sed:content>
+  </sed:unit>
+  <sed:unit sed:id="a001" sed:type="figure-simple" sed:href="x-svn://...">
+    <sed:content>no inlines here</sed:content><!-- title? -->
+  </sed:unit>
+  <sed:unit sed:id="a002" sed:type="p" sed:deleted="true">
+    <sed:content>This p <emph>was</emph> in base</sed:content>
+  </sed:unit>
+  <sed:unit sed:id="0009" sed:type="p" sed:class="itemlist">
+    <sed:content>My Bullet</sed:content>
+  </sed:unit>
+  <!-- Existence of @previous means this is a new unit from the session -->
+  <!-- Order should be maintained also, for now at least -->
+  <sed:unit sed:id="woot style: client id + generation at client"
+      sed:previous="000c"
+      sed:type="link" sed:href="http://...">
+    <sed:content>Was added during this session</sed:content>
+  </sed:unit>
+</sed:authoring>
