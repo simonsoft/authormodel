@@ -10,6 +10,7 @@
     "bev": "^1.0.0",
     "chai": "^2.1.0",
     "simple-mock": "^0.2.8",
+    "xml.js": "0.0.8",
     "yobo": "^0.1.1"
   },
   "devDependencies": {

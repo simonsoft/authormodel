@@ -56,9 +56,38 @@ describe("AuthoringCollectionSerializeXml", function() {
 
   });
 
-  describe("#parse", function() {
+  describe("#deserialize", function() {
 
-    xit("Must know about types, for example to produce id as string and indent as integer");
+    var samplebase = './xml/test/';
+    var serializer = new AuthoringCollectionSerializerXml();
+
+    describe("sample1", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample1-collection.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      expect(c.pluck('id')).to.deep.equal(['0006','a001','a002','0009','woot style: client id + generation at client']);
+
+      expect(c.get('0006') === c.get('0006')).to.be.true();
+      expect(c.get('0006').get('type')).to.equal('p');
+      expect(c.get('0006').get('content')).to.equal('Text with <emph>inline</emph> <unit>provocation</unit> &gt;0.');
+
+      expect(c.get('a001').get('type')).to.equal('figure-simple');
+      expect(c.get('a001').get('href')).to.equal('x-svn://');
+
+      expect(c.get('a002').get('deleted')).to.be.true();
+      expect(c.get('a002').has('content')).to.be.true();
+
+      expect(c.get('0009').get('class')).to.equal('itemlist');
+
+      expect(c.at(4).get('previous')).to.equal('000c');
+
+      expect(c.get('0006').has('previous')).to.be.false();
+      expect(c.get('0006').has('class')).to.be.false();
+      expect(c.get('0006').has('deleted')).to.be.false();
+      expect(c.get('0006').has('href')).to.be.false();
+    });
 
   });
 

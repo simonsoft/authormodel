@@ -1,0 +1,2 @@
+
+require('../xml/test/AuthoringCollectionSerializerXmlSpec');

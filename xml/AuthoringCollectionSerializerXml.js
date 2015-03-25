@@ -1,4 +1,5 @@
 
+var authormodel = require('../');
 
 var AuthoringCollectionSerializerXml = module.exports = function AuthoringCollectionSerializerXml() {
 
@@ -6,6 +7,8 @@ var AuthoringCollectionSerializerXml = module.exports = function AuthoringCollec
 
 var _ = require('underscore');
 var builder = require('xmlbuilder');
+
+var parser = require('./parserlib');
 
 AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollection) {
 
@@ -44,4 +47,19 @@ AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollect
   authoringCollection.each(unit);
 
   return xml.end({ pretty: true, indent: '\t', newline: '\n' });
+};
+
+AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString) {
+
+  var c = new authormodel.AuthoringCollection();
+
+  var x = parser.parse(xmlString)
+  var xc = parser.get(x, '/authoring');
+
+  parser.each(xc, 'unit', function(xrule) {
+    var u = new authormodel.AuthoringUnit();
+    c.add(u);
+  });
+
+  return c;
 };
