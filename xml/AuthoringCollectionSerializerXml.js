@@ -53,13 +53,56 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString) {
 
   var c = new authormodel.AuthoringCollection();
 
-  var x = parser.parse(xmlString)
-  var xc = parser.get(x, '/authoring');
+  var ns = {
+    sed: 'http://www.simonsoft.se/namespace/editor'
+  };
 
-  parser.each(xc, 'unit', function(xrule) {
-    var u = new authormodel.AuthoringUnit();
+  var attrParserDefault = function(str) { return str; };
+  var attrParser = {
+    deleted: function(str) { return Boolean(str); },
+    preview: function(str) { return Boolean(str); }
+  };
+
+  var x = parser.parse(xmlString)
+  var xc = parser.get(x, '/sed:authoring', ns);
+
+  var contentpending = [];
+
+  parser.each(xc, 'sed:unit', function(unit) {
+    var json = {};
+    parser.each(unit, '@*', function(attr) {
+      var nameNoNS = attr.localName;
+      var value = (attrParser[nameNoNS] || attrParserDefault)(attr.value);
+      json[nameNoNS] = value;
+    });
+    var u = new authormodel.AuthoringUnit(json);
+    if (parser.query(unit, 'sed:content', ns).length === 1) {
+      contentpending.push(u);
+    };
     c.add(u);
+  }, ns);
+
+  console.log('content pending', _.pluck(contentpending, 'id'));
+
+  var contentPattern = /<sed:content>(.*)<\/sed:content>/gi
+
+  var i = 0;
+  var debug = xmlString.replace(contentPattern, function(match, text, x){
+    var unit = contentpending[i++];
+    if (!unit) {
+      throw new Error('Missing unit for content: ' + text);
+    }
+    if (!unit.set) {
+      throw new Error('Unexpected unit: ' + unit);
+    }
+    unit.set('content', text);
+    return '<!-- extracted ' + i + ' ' + x + ' ' + text.length + '-->';
   });
+
+  if (i !== contentpending.length) {
+    console.log(debug);
+    throw 'Content extraction failed. Found ' + i + ' of ' + contentpending.length;
+  }
 
   return c;
 };
