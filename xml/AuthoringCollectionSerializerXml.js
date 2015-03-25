@@ -18,29 +18,28 @@ AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollect
     }
   };
 
-  var attr = function(unitXml, key, value) {
-    if (key == 'id' || key == 'type') {
-      return;
-    }
-    var a = unitXml.ele(key);
-    if (key == 'content') {
-      a.raw(value);
-    } else {
-      a.text(value);
-    }
-  };
+  var xml = builder.create('sed:authoring',
+    {version: '1.0', encoding: 'UTF-8'});
 
-  var xml = builder.create('authoring');
+  xml.att('xmlns:sed', 'http://www.simonsoft.se/namespace/editor');
 
   var unit = function(model) {
     assert(model.has('id'), model, "Serialization requires model id");
     assert(model.has('type'), model, "Serialization requires model type");
-    var u = xml.ele('unit', {
-      'id': model.get('id'),
-      'type': model.get('type')
+    var u = xml.ele('sed:unit', {
+      'sed:id': model.get('id'),
+      'sed:type': model.get('type')
     });
     for (var a in model.attributes) {
-      attr(u, a, model.get(a));
+      var v = model.get(a);
+      if (a === 'id' || a === 'type') {
+        // already added
+      } else if (a === 'content') {
+        var content = u.ele('sed:content');
+        content.raw(v);
+      } else {
+        u.att('sed:' + a, v);
+      }
     }
   };
 

@@ -19,14 +19,13 @@ describe("AuthoringCollectionSerializeXml", function() {
     }));
     ac.add(new AuthoringUnit({
       id: '2',
-      type: 'graphic',
-      fileref: 'x-svn://...'
+      type: 'figure-simple',
+      href: 'x-svn://...'
     }));
     ac.add(new AuthoringUnit({
       id: '3',
       type: 'p',
-      indent: 1,
-      class: 'li',
+      class: 'itemlist',
       content: 'Bullet'
     }));
 
@@ -38,20 +37,35 @@ describe("AuthoringCollectionSerializeXml", function() {
       expect(s).to.be.a('string');
     });
 
+    it("Is XML UTF-8", function() {
+      var s = serializer.serialize(ac);
+      expect(s).to.match(/^<\?xml version="1.0" encoding="UTF-8"\?>/);
+    });
+
+    it("Declares namespace", function() {
+      var s = serializer.serialize(ac);
+      expect(s).to.contain('xmlns:sed="http://www.simonsoft.se/namespace/editor"');
+    });
+
+    it("Root element is namespaced", function() {
+      var s = serializer.serialize(ac);
+      expect(s).to.contain('<sed:authoring');
+    });
+
     it("Produces a raw xml collection", function() {
       var s = serializer.serialize(ac);
-      expect(s).to.match(/<unit[\s\S]+<unit.[\s\S]+<unit/);
+      expect(s).to.match(/<sed:unit[\s\S]+<sed:unit.[\s\S]+<sed:unit/);
     });
 
     it("Handles inline as xml, no escaping", function() {
       var s = serializer.serialize(ac);
       expect(s).not.to.contain('&lt;emph');
-      expect(s).to.contain('<content>Text with <emph>inline</emph>');
+      expect(s).to.contain('<sed:content>Text with <emph>inline</emph>');
     });
 
     it("Preserves existing entities", function() {
       var s = serializer.serialize(ac);
-      expect(s).to.contain('<content>Text with <emph>inline</emph> &gt;0.</content>');
+      expect(s).to.contain('<sed:content>Text with <emph>inline</emph> &gt;0.</sed:content>');
     });
 
   });
