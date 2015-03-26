@@ -17,6 +17,10 @@ module.exports = {
   AuthoringCollectionMonitor: AuthoringCollectionMonitor,
   ActionContext: ActionContext,
 
+  serializers: {
+    sedXml: require('./xml/AuthoringCollectionSerializerXml')
+  },
+
   // Reuse the same libs downstream, mainly to avoid duplication in Webpack bundles
   // Also important to avoid Backbone's wrapping of models, but quite irrelevant because AuthoringUnit is already subclassing the expected Model
   Backbone: yobo.Backbone,

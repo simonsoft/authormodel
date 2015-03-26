@@ -1,5 +1,7 @@
 
-var authormodel = require('../');
+// Maybe this code should move to a downstream module so we can require('authormodel') here and don't duplicate impl selection
+var AuthoringUnit = require('../unit/AuthoringUnitBackbone');
+var AuthoringCollection = require('../collection/AuthoringCollectionYobo');
 
 var AuthoringCollectionSerializerXml = module.exports = function AuthoringCollectionSerializerXml() {
 
@@ -50,7 +52,7 @@ AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollect
 
 AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString) {
 
-  var c = new authormodel.AuthoringCollection();
+  var c = new AuthoringCollection();
 
   var ns = {
     sed: 'http://www.simonsoft.se/namespace/editor'
@@ -74,7 +76,7 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString) {
       var value = (attrParser[nameNoNS] || attrParserDefault)(attr.value);
       json[nameNoNS] = value;
     });
-    var u = new authormodel.AuthoringUnit(json);
+    var u = new AuthoringUnit(json);
     if (parser.query(unit, 'sed:content', ns).length === 1) {
       contentpending.push(u);
     };
