@@ -18,7 +18,7 @@ module.exports = {
   ActionContext: ActionContext,
 
   serializers: {
-    sedXml: require('./xml/AuthoringCollectionSerializerXml')
+    SedXml: require('./xml/AuthoringCollectionSerializerXml')
   },
 
   // Reuse the same libs downstream, mainly to avoid duplication in Webpack bundles

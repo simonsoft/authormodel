@@ -7,7 +7,7 @@ var AuthoringCollectionSerializerXml = module.exports = function AuthoringCollec
 
 };
 
-var _ = require('underscore');
+var _ = require('../unit/BackboneExport')._;
 var builder = require('xmlbuilder');
 
 var parser = require('./parserlib');
