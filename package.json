@@ -2,6 +2,7 @@
   "name": "authormodel",
   "version": "0.3.5",
   "license": "Apache License 2.0",
+  "repository": "https://github.com/simonsoft/authormodel",
   "main": "./index",
   "scripts": {
     "test": "node_modules/.bin/mocha"
