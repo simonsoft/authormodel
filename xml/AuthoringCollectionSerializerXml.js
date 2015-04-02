@@ -50,9 +50,9 @@ AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollect
   return xml.end({ pretty: true, indent: '\t', newline: '\n' });
 };
 
-AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString) {
+AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toCollection) {
 
-  var c = new AuthoringCollection();
+  var c = toCollection || new AuthoringCollection();
 
   var ns = {
     sed: 'http://www.simonsoft.se/namespace/editor'
