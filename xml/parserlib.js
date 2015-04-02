@@ -5,17 +5,15 @@
 
 var XML = require('xmldom-xpath-wrapper');
 
-var assert = console.assert;
-
 XML.get = XML.get || function(context, xpath, ns) {
   var all = XML.query(context, xpath, ns);
-  assert(all.length === 1, 'Expected a single result but got', all.length, 'from', xpath, 'in', context.nodeName);
+  console.assert(all.length === 1, 'Expected a single result but got', all.length, 'from', xpath, 'in', context.nodeName);
   return all[0];
 };
 
 XML.dataOrDefault = XML.dataOrDefault || function(context, xpath, dflt, ns) {
   var all = XML.query(context, xpath);
-  assert(all.length < 2, 'Expected zero or one result but got', all.length, 'from', xpath, 'in', context.nodeName);
+  console.assert(all.length < 2, 'Expected zero or one result but got', all.length, 'from', xpath, 'in', context.nodeName);
   if (all.length === 0) {
     return dflt;
   }
@@ -33,10 +31,10 @@ XML.data = XML.data || function(context, xpath, ns) {
       return '';
     }
   }
-  assert(all.length === 1, 'Expected a single result but got', all.length, 'from', xpath, 'in', context.nodeName);
+  console.assert(all.length === 1, 'Expected a single result but got', all.length, 'from', xpath, 'in', context.nodeName);
   var x = all[0];
   return x.value || x.data ||
-    assert(false, 'No value or data in result from', xpath, 'in', context.nodeName);
+    console.assert(false, 'No value or data in result from', xpath, 'in', context.nodeName);
 };
 
 XML.each = XML.each || function(context, xpath, iterator, ns) {
