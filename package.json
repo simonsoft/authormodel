@@ -11,7 +11,7 @@
     "bev": "^1.0.0",
     "chai": "^2.1.0",
     "simple-mock": "^0.2.8",
-    "xml.js": "0.0.8",
+    "xmldom-xpath-wrapper": "0.0.9",
     "xmlbuilder": "^2.6.2",
     "yobo": "^0.1.1"
   },

@@ -3,7 +3,7 @@
 
 // Parser should be client side compatible and xml.js is
 
-var XML = require('xml.js');
+var XML = require('xmldom-xpath-wrapper');
 
 var assert = console.assert;
 
