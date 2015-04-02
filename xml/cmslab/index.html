@@ -7,9 +7,21 @@
     <script src="cmslab.bundle.js"></script>
   </head>
   <body>
-    <p>Collection:</p>
-    <pre id="currentCollection"></pre>
-    <pre id="currentXml"></pre>
-    <button id="echo">CMS persist</button>
+    <p>Item:</p>
+    <p><input id="item" type="text" size="60" value="x-svn:///svn/demo1^/vvab/xml/sections/INTRODUCTION.xml"></input></p>
+    <p><button id="prepare">Prepare</button> to session <input id="session" size="10" readonly="readonly" value="(nothing loaded yet)"/>:</p>
+    <textarea id="currentXml" cols="100" rows="10"></textarea>
+    <p>Produces collection:</p>
+    <pre id="currentCollection"><?xml version="1.0" encoding="UTF-8"?>
+<sed:authoring xmlns:sed="http://www.simonsoft.se/namespace/editor">
+	<sed:unit sed:id="1" sed:type="p">
+		<sed:content>Text with <emph>inline</emph> &gt;0.</sed:content>
+	</sed:unit>
+	<sed:unit sed:id="2" sed:type="graphic" sed:fileref="x-svn://..."/>
+	<sed:unit sed:id="3" sed:type="p" sed:indent="1" sed:class="li">
+		<sed:content>Bullet</sed:content>
+	</sed:unit>
+</sed:authoring></pre>
+    <p><button id="reconcile">CMS reconcile collection</button></p>
   </body>
 </html>

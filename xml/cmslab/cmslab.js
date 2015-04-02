@@ -25,37 +25,44 @@ var collection = window.authoringCollection = new authormodel.AuthoringCollectio
 var AuthoringUnit = window.AuthoringUnit = authormodel.AuthoringUnit;
 var serializer = new AuthoringCollectionSerializer();
 
-// some sample content
-collection.add(new AuthoringUnit({
-  id: '1',
-  type: 'p',
-  content: 'Text with <emph>inline</emph> &gt;0.'
-}));
-collection.add(new AuthoringUnit({
-  id: '2',
-  type: 'graphic',
-  fileref: 'x-svn://...'
-}));
-collection.add(new AuthoringUnit({
-  id: '3',
-  type: 'p',
-  indent: 1,
-  class: 'li',
-  content: 'Bullet'
-}));
+// TODO apply arbitrary todomvc rendering framework to collection, to get updated at change
+// TODO possibly also on manual change to XML
+
+var toCollection = function(xmlRawString) {
+  // TODO spec this for authoring collection: collection.reset();
+  return serializer.deserialize(xmlRawString, collection);
+};
 
 var toXmlRaw = function(authoringCollection) {
   return serializer.serialize(authoringCollection);
-}
+};
+
+var receiveXmlRaw = function(err, res) {
+  console.log('prepare received', err, res);
+  if (res.status != 200 && res.status != 204) {
+    return warn('prepare failed');
+  }
+  var xml = res.text;
+  $('#currentXml').val(xml);
+  toCollection(xml);
+};
+
+var prepare = function() {
+  var query = {
+    item: $('#item').val()
+  };
+  request
+    .get('/cms/rest/author/collection/prepare')
+    .query(query)
+    .set('Accept', 'text/xml')
+    .end(receiveXmlRaw);
+};
 
 var render = function() {
   $('#currentCollection').text(
     JSON.stringify(
       collection.toJSON(),
       null, '\t'));
-  $('#currentXml').text(
-    toXmlRaw(collection)
-  );
 };
 
 var persistCallback = function(err, res) {
@@ -70,11 +77,12 @@ var persistCallback = function(err, res) {
   }
 };
 
-var persist = function() {
+var reconcile = function() {
+  // using the collection is more interesting, but we might want to listen to xml text changes
   var xml = toXmlRaw(collection);
   console.log('to persist', xml);
   request
-    .post('/cms/rest/authoring/persist')
+    .post('/cms/rest/author/collection/reconcile')
     .set('Content-Type', 'text/xml')
     .send(xml)
     .end(persistCallback);
@@ -85,7 +93,8 @@ var cmslab = function() {
   render();
   collection.on('add remove change', render);
 
-  $('#echo').click(persist);
+  $('#prepare').click(prepare);
+  $('#reconcile').click(reconcile);
 };
 
 $(document).ready(cmslab);
