@@ -83,8 +83,6 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toC
     c.add(u);
   }, ns);
 
-  console.log('content pending', _.pluck(contentpending, 'id'));
-
   var contentPattern = /<sed:content>(.*)<\/sed:content>/gi
 
   var i = 0;

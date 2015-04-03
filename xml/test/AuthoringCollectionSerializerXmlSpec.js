@@ -75,7 +75,7 @@ describe("AuthoringCollectionSerializeXml", function() {
     var samplebase = './xml/test/';
     var serializer = new AuthoringCollectionSerializerXml();
 
-    describe("sample1", function() {
+    it("Parses sample1", function() {
       var fs = require('fs');
       var samplefile = samplebase + 'sample1-collection.xml';
       var xml = fs.readFileSync(samplefile, 'utf8');
@@ -101,6 +101,19 @@ describe("AuthoringCollectionSerializeXml", function() {
       expect(c.get('0006').has('class')).to.be.false;//();
       expect(c.get('0006').has('deleted')).to.be.false;//();
       expect(c.get('0006').has('href')).to.be.false;//();
+    });
+
+    it("Can deserialize to existing collection", function() {
+
+      var c = new AuthoringCollection();
+      c.add(new AuthoringUnit({id:'A', type:'p'}));
+      var xml = serializer.serialize(c);
+
+      var c2 = new AuthoringCollection();
+      var returned = serializer.deserialize(xml, c2);
+      expect(returned).to.equal(c2);
+      expect(c2.size()).to.equal(1);
+
     });
 
   });
