@@ -8,11 +8,12 @@ var $ = require('jquery');
 var rangy = require('rangy');
 rangy.init();
 
-var ActionContext = require('../../authormodel/actioncontext/ActionContext');
+var authormodel = require('authormodel');
+var ActionContext = authormodel.ActionContext;
 
 module.exports = function interfaceSpec(required) {
 
-  var AuthoringUnit = require('../../authormodel').AuthoringUnit;
+  var AuthoringUnit = authormodel.AuthoringUnit;
   var UnitEditor = required.UnitEditor;
 
   // method not working properly with webpack tests, tests should be accurate,

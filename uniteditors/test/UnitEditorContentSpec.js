@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var AuthoringUnit = require('../../authormodel').AuthoringUnit;
+var AuthoringUnit = require('authormodel').AuthoringUnit;
 
 // tests for unit editors like a paragraph with 'content' attribute
 
