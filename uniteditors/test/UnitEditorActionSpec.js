@@ -3,6 +3,7 @@
 // This now comprises of both the API of unit editors and the Action Specs for simplicity
 
 var expect = require('chai').expect;
+
 var $ = require('jquery');
 
 var rangy = require('rangy');
@@ -20,23 +21,27 @@ module.exports = function interfaceSpec(required) {
   // issue seems to be with rangy impl
   describe('hasSelection()', function() {
 
-    xit('returns false if there is no selection', function() {
-      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
+    var $testcontent = $('#testcontent');
+    console.assert($testcontent.length, 'No #testcontent element, can\'t do Rangy tests without it');
+
+    it('returns false if there is no selection', function() {
+      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-noselection'});
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
 
-      //do i need to force clear selections?
-    /* rangy.init();
-      var range = rangy.createRange();
-      range.getSelection().removeAllRanges();*/
-
-      expect(uniteditor.hasSelection()).to.be.false();
+      // we might need this in some test runners
+      //var range = rangy.createRange();
+      //range.getSelection().removeAllRanges();*/
+      console.log('Rangy no selection:', uniteditor.getSelection());
+      expect(uniteditor.hasSelection()).to.be.false;
     });
 
-    xit('returns true if there is a selection', function() {
-      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
+    it('returns true if there is a selection', function() {
+      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-selection'});
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
 
       var startIndex = 6;
       var endIndex = 9;
@@ -45,19 +50,25 @@ module.exports = function interfaceSpec(required) {
       range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
       rangy.getSelection().setSingleRange(range);
 
-      expect(uniteditor.hasSelection()).to.be.true();
+      console.log('Rangy with selection:', uniteditor.getSelection());
+      expect(uniteditor.hasSelection()).to.be.true;
     });
 
   });
 
   // method not working properly with webpack tests, tests should be accurate,
   // issue seems to be with rangy impl
-  xdescribe('getSelection()', function() {
-    xit('returns a rangy object', function() {
+  describe('getSelection()', function() {
+
+    var $testcontent = $('#testcontent');
+    console.assert($testcontent.length, 'No #testcontent element, can\'t do Rangy tests without it');
+
+    it('returns a rangy object', function() {
       //Arrange
-      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
+      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-getselection'});
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
 
       var startIndex = 6;
       var endIndex = 9;
@@ -69,9 +80,19 @@ module.exports = function interfaceSpec(required) {
       sel.setSingleRange(range);
 
       // use the uniteditor API
-      expect(uniteditor.getSelection()).to.exist();
+      expect(uniteditor.getSelection()).to.exist;
       expect(uniteditor.getSelection()).to.equal(rangy.getSelection());
     });
+
+    it('Returns a rangy object even if there is no selection, so use hasSelection', function() {
+      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-getselection'});
+      var uniteditor = new UnitEditor({model: au});
+      uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
+      expect(uniteditor.getSelection()).to.exist;
+      expect(Object.keys(uniteditor.getSelection())).to.include('anchorNode');
+    });
+
   });
 
   describe('Focus and other events from user', function() {
@@ -87,7 +108,7 @@ module.exports = function interfaceSpec(required) {
         uniteditor = new UnitEditor({model: au});
         expect(uniteditor.$el).to.exist;
 
-        // fake keypress on uniteditor.§el
+        // fake keypress on uniteditor.$el
         var e = $.Event( 'keypress', {keyCode: 13 } );
         uniteditor.$el.trigger(e);
 
@@ -148,73 +169,94 @@ module.exports = function interfaceSpec(required) {
       });
 
       it('Passes an ActionContext object with the event', function() {
-        var authoractionEventContext;
+        var authorintentEventContext;
 
         // create uniteditor
         uniteditor = new UnitEditor({model: au});
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
-          authoractionEventContext = context;
+          authorintentEventContext = context;
         });
 
         // fake keypress enter on uniteditor.$el
         var e = $.Event( 'keypress', {keyCode: 13 } );
         uniteditor.$el.trigger(e);
 
-        expect(authoractionEventContext).to.be.an.instanceof(ActionContext);
+        expect(authorintentEventContext).to.be.an.instanceof(ActionContext);
 
         // here or in additional it below do interesting get calls on context object and assert result
 
       });
 
+      var result;
+
       it('Sets itself as uniteditor instance', function() {
 
-        var authoractionEventContext;
+        var authorintentEventContext;
         var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
 
         var uniteditor = new UnitEditor({model: au});
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
-          authoractionEventContext = context;
+          authorintentEventContext = context;
         });
+
+        // Had unexpected selections here, might get selection from some other unit in the tests?
+        var sel = rangy.getSelection();
+        sel.removeAllRanges();
+        expect(uniteditor.hasSelection()).to.be.false;
 
         // fake keypress enter on uniteditor.$el
         var e = $.Event( 'keypress', {keyCode: 13 } );
         uniteditor.$el.trigger(e);
 
-        expect(authoractionEventContext.getUnitEditor()).to.equal(uniteditor);
+        expect(authorintentEventContext.getUnitEditor()).to.equal(uniteditor);
+
+        result = authorintentEventContext;
+      });
+
+      // Means we shouldn't depend on rangy objects for regular element access
+      it('Avoids setSelection if there is no actual selection', function() {
+        expect(result.getSelection()).to.be.undefined;
       });
 
     });
 
     describe('A typical text paragraph\'s ActionContext contribution', function() {
 
-      // TODO to implement these tests we might need to mock an ActionContext and assert on what uniteditor sets on it
+      var result; // expose for subsequent asserts
 
-      xit('Sets a selection range object (Rangy\'s API is fine)', function() {
+      var $testcontent = $('#testcontent');
+      console.assert($testcontent.length, 'No #testcontent element, can\'t do Rangy tests without it');
+
+      it('Sets a selection range object (Rangy\'s API is fine)', function() {
         //Arrange
         var rangy = require('rangy');
-        var authoractionEventContext;
-        var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
-        var $el = uniteditor.$el;
+        var authorintentEventContext;
+        var au = new AuthoringUnit({type: 'text', content: '012345678901234567890 <label>abcdefghijklmnop</label>'});
 
         // create uniteditor
-        uniteditor = new UnitEditor({model: au});
+        var uniteditor = new UnitEditor({model: au});
+        uniteditor.render();
+        console.assert(!!uniteditor.$el);
+        console.assert(!!uniteditor.el);
+        uniteditor.$el.appendTo($testcontent);
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
-          authoractionEventContext = context;
+          authorintentEventContext = context;
         });
 
+        // select text on uniteditor
         rangy.init();
 
         var startIndex = 6;
         var endIndex = 9;
 
         var range = rangy.createRange();
-        range.setStartAndEnd($el[0].firstChild, startIndex, endIndex);
+        range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
         var sel = rangy.getSelection();
 
         sel.setSingleRange(range);
@@ -225,69 +267,39 @@ module.exports = function interfaceSpec(required) {
         uniteditor.$el.trigger(e);
 
         //Assert
-        expect(authoractionEventContext).to.be.an.instanceof(ActionContext);
+        expect(authorintentEventContext).to.be.an.instanceof(ActionContext);
 
-        var selection = authoractionEventContext.get('selection');
+        var selection = authorintentEventContext.getSelection();
+        expect(selection).to.exist;
+        console.log('Rangy selection object', selection);
+        expect(Object.keys(selection)).to.include('anchorNode');
 
-        // create uniteditor
-        // insert text into uniteditor
-        // select text on uniteditor
-        // trigger actioncontext on selection
-        //
+
+        // reuse this step as setup for other asserts
+        result = authorintentEventContext;
       });
 
-      //Move to the getSelection()
+      it('Sets the authoringunit', function() {
+        expect(result.getUnitEditor()).to.exist;
+      });
 
-      // method not working properly with webpack tests, tests should be accurate,
-      // issue seems to be with rangy impl
-      xit('Exposes the DOM element through the selection range object', function() {
-        //Arrange
-        var rangy = require('rangy');
-        rangy.init();
-
-        var $el = $('<p />');
-        $el.addClass('testing');
-        $el.text('012345678901234567890');
-        $el.appendTo('body');
-
-        var startIndex = 6;
-        var endIndex = 9;
-
-        var range = rangy.createRange();
-        range.setStartAndEnd($el[0].firstChild, startIndex, endIndex);
-        var sel = rangy.getSelection();
-
-        // Act
-        sel.setSingleRange(range);
-
-        //Assert
-        expect(sel.anchorNode).to.equal($el[0].firstChild);
+      it('Exposes the DOM element through the selection range object', function() {
+        var sel = result.get('selection');
+        var unitEditor = result.getUnitEditor();
+        expect(sel.anchorNode).to.equal(unitEditor.el.firstChild);
       });
 
       xit('Sets the top level element because the selection might be in an inline', function() {
 
       });
 
-      xit('Sets the authoringunit', function() {
-        // We need some kind of method to find authoring units.. are we using ids?
-
-      });
-
       xit('Must have saved to the unit before emitting, so the model is up to date', function() {
-
+        // TODO this is important but exact spec pending experiments with data binding in render engines
       });
+
     });
 
-    xdescribe(' The external API for modification in the unit editor', function() {
-
-      // we have already defined (somewhere) .save() .render() etc
-      xit('should have a render function', function() {
-        // body...
-      });
-
-      xit('should have a save function', function() {
-        // body...
-      });
+    describe('Tentative API for aggregating actions/ops through action context', function() {
 
       xit('Considers all these functions as custom, expose them through .ops.[mutationDescription]', function() {
         // body...

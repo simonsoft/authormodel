@@ -29,4 +29,13 @@ module.exports = function(o) {
     return this;
   };
 
+  o.getSelection = function() {
+    return attributes.selection;
+  };
+
+  o.setSelection = function(selection) {
+    attributes.selection = selection;
+    return this;
+  };
+
 };

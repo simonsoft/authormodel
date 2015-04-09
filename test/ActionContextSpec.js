@@ -27,6 +27,11 @@ describe('ActionContext', function() {
     expect(new ActionContext().setUnit(model).getUnit()).to.equal(model);
   });
 
+  it("#setSelection and #getSelection", function() {
+    var selection = {}; // If we start validating this we might need a real rangy object here
+    expect(new ActionContext().setSelection(selection).getSelection()).to.equal(selection);
+  });
+
   xit('#addAction', function() {
 
   });
