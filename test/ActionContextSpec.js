@@ -22,6 +22,11 @@ describe('ActionContext', function() {
     expect(context.getUnitEditor()).to.equal(uniteditor);
   });
 
+  it("#setUnit and #getUnit", function() {
+    var model = {attributes:{}};
+    expect(new ActionContext().setUnit(model).getUnit()).to.equal(model);
+  });
+
   xit('#addAction', function() {
 
   });

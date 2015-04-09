@@ -20,4 +20,13 @@ module.exports = function(o) {
     attributes.unitEditor = unitEditor;
   };
 
+  o.getUnit = function() {
+    return attributes.unit;
+  };
+
+  o.setUnit = function(model) {
+    attributes.unit = model;
+    return this;
+  };
+
 };
