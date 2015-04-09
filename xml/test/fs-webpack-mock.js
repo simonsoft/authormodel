@@ -1,7 +1,8 @@
-var known = {
-  'sample-collection1.xml': require('!raw!sample-collection1.xml');
-}
+// webpack alias so known files can be pre-loaded per folder
 
+var known = {
+  './xml/test/sample1-collection.xml': require('raw!./sample1-collection.xml')
+};
 
 module.exports = {
 
