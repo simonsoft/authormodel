@@ -11,7 +11,7 @@ module.exports = function interfaceSpec(required) {
   describe('Module', function() {
 
     it("Exports a UnitEditor constructor", function() {
-      expect(UnitEditor).to.exist();
+      expect(UnitEditor).to.exist;
       expect(UnitEditor).to.be.a('function');
     });
 
@@ -29,18 +29,6 @@ module.exports = function interfaceSpec(required) {
       // TODO outside trigger isn't really a use case, and probably a distraction
       ue.trigger('custom1', [7]);
       expect(events).to.have.length(1);
-    });
-
-  });
-
-  describe("#isEmpty", function() {
-
-    it("Returns true if there is no user generated content");
-
-    it("Is a function", function() {
-      var au = new AuthoringUnit({type:'text', content:''});
-      var ue = new UnitEditor({model: au});
-      expect(ue.isEmpty).to.be.a('function');
     });
 
   });
