@@ -1,3 +1,6 @@
 node_modules
 # Jenkins build run with ./node_modules/.bin/mocha -R xunit > test-reports.xml and "publish jUnit" as post build step
 test-reports.xml
+
+# test-webpack.sh output
+webpack*
