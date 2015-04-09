@@ -30,9 +30,6 @@ module.exports = function interfaceSpec(required) {
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
 
-      // we might need this in some test runners
-      //var range = rangy.createRange();
-      //range.getSelection().removeAllRanges();*/
       console.log('Rangy no selection:', uniteditor.getSelection());
       expect(uniteditor.hasSelection()).to.be.false;
     });
@@ -54,6 +51,15 @@ module.exports = function interfaceSpec(required) {
       expect(uniteditor.hasSelection()).to.be.true;
     });
 
+    it('returns false if the selection is in some other unit editor', function() {
+      // So we should never need to do this in tests:
+      rangy.getSelection().removeAllRanges();
+
+      // Assume that we have a selection from previous test
+
+      expect('TODO implement').to.be.false;
+    });
+
   });
 
   // method not working properly with webpack tests, tests should be accurate,
@@ -65,10 +71,12 @@ module.exports = function interfaceSpec(required) {
 
     it('returns a rangy object', function() {
       //Arrange
-      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-getselection'});
+      var au = new AuthoringUnit({type: 'text', content: '012345678901234567890 <label>getselection</label>'});
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
+
+      expect('TODO do the selection in the inline instead so we get a more interesting test').to.be.false;
 
       var startIndex = 6;
       var endIndex = 9;
@@ -84,13 +92,16 @@ module.exports = function interfaceSpec(required) {
       expect(uniteditor.getSelection()).to.equal(rangy.getSelection());
     });
 
-    it('Returns a rangy object even if there is no selection, so use hasSelection', function() {
+    it('Returns undefined if there is no selection', function() {
       var au = new AuthoringUnit({type: 'text', content: '012345678901234567890-getselection'});
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
-      expect(uniteditor.getSelection()).to.exist;
-      expect(Object.keys(uniteditor.getSelection())).to.include('anchorNode');
+      expect(uniteditor.getSelection()).to.be.undefined;
+    });
+
+    it('Returns undefined if there is a selection but outside this unit', function() {
+      expect('TODO implement').to.be.false;
     });
 
   });
@@ -203,9 +214,6 @@ module.exports = function interfaceSpec(required) {
           authorintentEventContext = context;
         });
 
-        // Had unexpected selections here, might get selection from some other unit in the tests?
-        var sel = rangy.getSelection();
-        sel.removeAllRanges();
         expect(uniteditor.hasSelection()).to.be.false;
 
         // fake keypress enter on uniteditor.$el
