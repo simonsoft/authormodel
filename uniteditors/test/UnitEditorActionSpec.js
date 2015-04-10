@@ -30,7 +30,6 @@ module.exports = function interfaceSpec(required) {
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
 
-      console.log('Rangy no selection:', uniteditor.getSelection());
       expect(uniteditor.hasSelection()).to.be.false;
     });
 
@@ -47,7 +46,6 @@ module.exports = function interfaceSpec(required) {
       range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
       rangy.getSelection().setSingleRange(range);
 
-      console.log('Rangy with selection:', uniteditor.getSelection());
       expect(uniteditor.hasSelection()).to.be.true;
     });
 
@@ -323,7 +321,6 @@ module.exports = function interfaceSpec(required) {
 
         var selection = authorintentEventContext.getSelection();
         expect(selection).to.exist;
-        console.log('Rangy selection object', selection);
         expect(Object.keys(selection)).to.include('anchorNode');
 
 
