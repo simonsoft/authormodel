@@ -52,12 +52,31 @@ module.exports = function interfaceSpec(required) {
     });
 
     it('returns false if the selection is in some other unit editor', function() {
-      // So we should never need to do this in tests:
-      rangy.getSelection().removeAllRanges();
+      //Arrange
+      // unit 1
+      var au = new AuthoringUnit({type: 'text', content: 'I WILL BE SELECTED'});
+      var uniteditor = new UnitEditor({model: au});
+      uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
 
-      // Assume that we have a selection from previous test
+      // unit 2
+      var au2 = new AuthoringUnit({type: 'text', content: 'I WONT BE SELECTED'});
+      var uniteditor2 = new UnitEditor({model: au2});
+      uniteditor2.render();
+      uniteditor2.$el.appendTo($testcontent);
 
-      expect('TODO implement').to.be.false;
+      var startIndex = 5;
+      var endIndex = 7;
+
+      // ACT
+      // select on unit 1
+      var range = rangy.createRange();
+      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      var sel = rangy.getSelection();
+
+      // ASSERT
+      // assert on unit 2
+      expect(uniteditor2.hasSelection()).to.be.false;
     });
 
   });
@@ -76,10 +95,11 @@ module.exports = function interfaceSpec(required) {
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
 
-      expect('TODO do the selection in the inline instead so we get a more interesting test').to.be.false;
-
-      var startIndex = 6;
-      var endIndex = 9;
+      /** changed range to include the label areas,
+       * but doesn't really work based on range.setStartAndEnd in this element
+       */
+      var startIndex = 29;
+      var endIndex = 31;
 
       var range = rangy.createRange();
       range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
@@ -101,7 +121,31 @@ module.exports = function interfaceSpec(required) {
     });
 
     it('Returns undefined if there is a selection but outside this unit', function() {
-      expect('TODO implement').to.be.false;
+      //Arrange
+      // unit 1
+      var au = new AuthoringUnit({type: 'text', content: 'I WILL BE SELECTED'});
+      var uniteditor = new UnitEditor({model: au});
+      uniteditor.render();
+      uniteditor.$el.appendTo($testcontent);
+
+      // unit 2
+      var au2 = new AuthoringUnit({type: 'text', content: 'I WONT BE SELECTED'});
+      var uniteditor2 = new UnitEditor({model: au2});
+      uniteditor2.render();
+      uniteditor2.$el.appendTo($testcontent);
+
+      var startIndex = 5;
+      var endIndex = 7;
+
+      // ACT
+      // select on unit 1
+      var range = rangy.createRange();
+      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      var sel = rangy.getSelection();
+
+      // ASSERT
+      // assert on unit 2
+      expect(uniteditor2.getSelection()).to.be.undefined;
     });
 
   });
