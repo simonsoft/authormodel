@@ -83,7 +83,7 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toC
     c.add(u);
   }, ns);
 
-  var contentPattern = /<sed:content>(.*)<\/sed:content>/gi
+  var contentPattern = /<sed:content>([\s\S]*?)<\/sed:content>/gi
 
   var i = 0;
   var debug = xmlString.replace(contentPattern, function(match, text, x){
@@ -100,7 +100,7 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toC
 
   if (i !== contentpending.length) {
     console.log(debug);
-    throw 'Content extraction failed. Found ' + i + ' of ' + contentpending.length;
+    throw new Error('Content extraction failed. Found ' + i + ' of ' + contentpending.length);
   }
 
   return c;

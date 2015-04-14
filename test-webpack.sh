@@ -33,3 +33,5 @@ requireTest.keys().forEach(requireTest);
 EOF
 
 ./node_modules/.bin/webpack 'mocha\!./webpack-test.js' --output-file webpack-test.bundle.js --resolve-alias fs=./fs-webpack-mock
+
+./node_modules/.bin/mocha-phantomjs webpack-test.html

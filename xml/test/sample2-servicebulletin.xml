@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sed:authoring xmlns:cms="http://www.simonsoft.se/namespace/cms" xmlns:sed="http://www.simonsoft.se/namespace/editor">
+  <sed:unit sed:type="title" sed:id="4v7jy6f173f0001"><sed:content>Service Bulletin</sed:content></sed:unit>
+  <sed:start sed:id="4v7jy6f173f0004"/>
+  <sed:unit sed:type="title" sed:id="4v7jy6f173f0005"><sed:content>Background</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f0006"><sed:content>The lithium-ion batteries may under certain circumstances overheat
+  and fail.</sed:content></sed:unit>
+  <sed:end sed:id="4v7jy6f173f0004"/>
+  <sed:start sed:id="4v7jy6f173f0007"/>
+  <sed:unit sed:type="title" sed:id="4v7jy6f173f0008"><sed:content>Applicability</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f0009"><sed:content>Model 781.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000a"><sed:content>Model 787 manufactured before 2014–03–15.</sed:content></sed:unit>
+  <sed:end sed:id="4v7jy6f173f0007"/>
+  <sed:start sed:id="4v7jy6f173f000b"/>
+  <sed:unit sed:type="title" sed:id="4v7jy6f173f000c"><sed:content>Replacement Material</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000d"><sed:content>P129001 Battery replacement tray.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000e"><sed:content>P129107 Battery charger temperature sensor.</sed:content></sed:unit>
+  <sed:end sed:id="4v7jy6f173f000b"/>
+  <sed:start sed:id="4v7jy6f173f000f"/>
+  <sed:unit sed:type="title" sed:id="4v7jy6f173f000g"><sed:content>Procedure</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000j"><sed:content>We recommend that you use a minimum of two people when lifting
+  the battery tray. Attempting this procedure alone could result in
+  personal injury or equipment damage.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000k"><sed:content>Disconnect charger from the mains supply.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000m"><sed:content>Remove front panel by pulling the right hand side of the panel.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000n"><sed:content>Disconnect the battery tray from the charger.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000p"><sed:content>Slide the battery tray outwards and remove from the rack.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000q"><sed:content>Open the right hand side panel by removing the 4 Torx T20 screws
+  and sliding the panel forward.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000r"><sed:content>Disconnect the temperature sensor P129106 from connector S3 and
+  remove the sensor.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000s"><sed:content>Mount the replacement sensor P129107 and connect to S3.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000t"><sed:content>Close the side panel and tighten the 4 Torx T20 screws.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000v"><sed:content>Insert the battery replacement tray and connect to the charger.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000w"><sed:content>Close the front panel.</sed:content></sed:unit>
+  <sed:unit sed:type="p" sed:id="4v7jy6f173f000x"><sed:content>Connect the charger to the mains supply.</sed:content></sed:unit>
+  <sed:end sed:id="4v7jy6f173f000f"/>
+</sed:authoring>
