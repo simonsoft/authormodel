@@ -1,6 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
+var mocks = require('simple-mock');
 
 var AuthoringUnit = require('authormodel').AuthoringUnit;
 
@@ -48,4 +49,34 @@ module.exports = function interfaceSpec(required) {
 
   });
 
-}
+  describe("#save", function() {
+
+    var ue;
+    var changed = mocks.spy();
+    var changedContent = mocks.spy();
+
+    it("Updates content", function() {
+      var au = new AuthoringUnit({type:'text', content:''});
+      au.on('change', changed);
+      au.on('change:content', changedContent);
+      ue = new required.UnitEditor({model: au});
+      ue.$el.text('Some text');
+      expect(changed.called).to.be.false;
+      expect(changedContent.called).to.be.false;
+      ue.save();
+    });
+
+    it("...in a way that triggers a change event on the model", function() {
+      expect(changed.called).to.be.true;
+      expect(changedContent.called).to.be.true;
+    });
+
+    it("Only triggers change events if actually changed", function() {
+      ue.save();
+      expect(changed.calls).to.have.length(1);
+      expect(changedContent.calls).to.have.length(1);
+    });
+
+  });
+
+};
