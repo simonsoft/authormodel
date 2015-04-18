@@ -64,8 +64,8 @@ module.exports = function interfaceSpec(required) {
     });
 
     it("Should already have a unit editor for the first model", function() {
-      expect(ue1).to.exist();
-      expect(ue1.eventspy.calls).to.be.empty();
+      expect(ue1).to.exist;
+      expect(ue1.eventspy.calls).to.be.empty;
     });
 
     it("Should produce a unit editor for the new unit", function() {
