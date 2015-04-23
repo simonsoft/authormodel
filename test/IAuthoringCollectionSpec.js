@@ -33,21 +33,32 @@ module.exports = function interfaceSpec(required) {
 
     // This is because we don't want to specify the type of model (at least not yet)
     // And we don't want the collection to create default a no-behavior model like Backbone does
-    xit("Should only allow actual models, not standalone attribute objects", function() {
+    it("Should only allow actual models, not standalone attribute objects", function() {
       expect(function() {
         var units = new AuthoringCollection({type:'text'});
       }).to.throw();
       expect(function() {
         var units = new AuthoringCollection([{type:'text'}]);
       }).to.throw();
-      // TODO if we enable this spec again: expect array of actual objects to pass
+      var units = new AuthoringCollection([new AuthoringUnit({type:'text'})]);
+      expect(units.size()).to.equal(1);
+    });
+
+    it("Should do Backbone style auto-instantiation if there is a Model property", function() {
+      var Collection = AuthoringCollection.extend({
+        model: AuthoringUnit
+      });
+      var units = new AuthoringCollection({type:'text'});
+      expect(units.size()).to.equal(1);
+      expect(units.at(0).cid).to.exist;
+      expect(units.at(0).get('type')).to.equal('text');
     });
 
   });
 
   describe("add", function() {
 
-    xit("Should only allow actual models, not standalone attribute objects", function() {
+    it("Should only allow actual models, not standalone attribute objects", function() {
       var units = new AuthoringCollection();
       expect(function() {
         units.add({type:'text'});
@@ -55,7 +66,8 @@ module.exports = function interfaceSpec(required) {
       expect(function() {
         units.add([{type:'text'}]);
       }).to.throw();
-      // TODO if we enable this spec again: expect array of actual objects to pass
+      units.add([new AuthoringUnit({type:'text'})]);
+      expect(units.size()).to.equal(1);
     });
 
     it("Returns added units", function() {
