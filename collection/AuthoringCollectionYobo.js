@@ -1,31 +1,17 @@
 
 var yobo = require('yobo');
 
+var CollectionModelUndefined = function() {
+  throw new Error('The collection has no model option so added items must be models, not attribute objects');
+};
+
 // Essential that we extend first, before we modify the prototype
 var Collection = yobo.Collection.extend({
 
-  model: undefined,
+  model: CollectionModelUndefined,
 
   // never shuffle authoring collection
-  comparator: false,
-
-  add: function(models, options) {
-    if (yobo._.isArray(models)) {
-      yobo._.each(models, this.validateAuthoringUnitAdd.bind(this));
-    } else {
-      this.validateAuthoringUnitAdd(models);
-    }
-
-    return yobo.Collection.prototype.add.apply(this, arguments);
-  },
-
-  validateAuthoringUnitAdd: function(model) {
-    if (!this.model) {
-      if (!model.hasOwnProperty('attributes')) {
-        throw new Error("Only model instances can be added, not attribute objects");
-      }
-    }
-  }
+  comparator: false
 
 });
 

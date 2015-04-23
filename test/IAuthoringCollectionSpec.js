@@ -48,7 +48,7 @@ module.exports = function interfaceSpec(required) {
       var Collection = AuthoringCollection.extend({
         model: AuthoringUnit
       });
-      var units = new AuthoringCollection({type:'text'});
+      var units = new Collection({type:'text'});
       expect(units.size()).to.equal(1);
       expect(units.at(0).cid).to.exist;
       expect(units.at(0).get('type')).to.equal('text');
@@ -62,7 +62,7 @@ module.exports = function interfaceSpec(required) {
       var units = new AuthoringCollection();
       expect(function() {
         units.add({type:'text'});
-      }).to.throw();
+      }).to.throw('The collection has no model option so added items must be models, not attribute objects');
       expect(function() {
         units.add([{type:'text'}]);
       }).to.throw();
