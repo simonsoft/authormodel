@@ -26,6 +26,18 @@ module.exports = function interfaceSpec(required) {
     xit("may be renamed to #getUnitEditor", function() {
     });
 
+    it("Takes an authoring unit as first argument", function() {
+
+    });
+
+    it("Takes options as second argument", function() {
+
+    });
+
+    it("Supports an el option for existing element", function() {
+
+    });
+
   });
 
 };
