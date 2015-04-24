@@ -1,20 +1,17 @@
 
 var yobo = require('yobo');
 
+var CollectionModelUndefined = function() {
+  throw new Error('The collection has no model option so added items must be models, not attribute objects');
+};
+
 // Essential that we extend first, before we modify the prototype
 var Collection = yobo.Collection.extend({
 
-  // never shuffle authoring collection
-  comparator: false,
+  model: CollectionModelUndefined,
 
-  add: function(models, options) {
-    // TODO when we get test coverage for array this is obviously going to fail
-    // but then we should try to find a better way to restrict this
-    if (!models.hasOwnProperty('attributes')) {
-      throw "Only model instances can be added, not attribute objects";
-    }
-    return yobo.Collection.prototype.add.apply(this, arguments);
-  }
+  // never shuffle authoring collection
+  comparator: false
 
 });
 

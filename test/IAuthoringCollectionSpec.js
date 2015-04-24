@@ -40,6 +40,18 @@ module.exports = function interfaceSpec(required) {
       expect(function() {
         var units = new AuthoringCollection([{type:'text'}]);
       }).to.throw();
+      var units = new AuthoringCollection([new AuthoringUnit({type:'text'})]);
+      expect(units.size()).to.equal(1);
+    });
+
+    it("Should do Backbone style auto-instantiation if there is a Model property", function() {
+      var Collection = AuthoringCollection.extend({
+        model: AuthoringUnit
+      });
+      var units = new Collection({type:'text'});
+      expect(units.size()).to.equal(1);
+      expect(units.at(0).cid).to.exist;
+      expect(units.at(0).get('type')).to.equal('text');
     });
 
   });
@@ -50,10 +62,12 @@ module.exports = function interfaceSpec(required) {
       var units = new AuthoringCollection();
       expect(function() {
         units.add({type:'text'});
-      }).to.throw();
+      }).to.throw('The collection has no model option so added items must be models, not attribute objects');
       expect(function() {
         units.add([{type:'text'}]);
       }).to.throw();
+      units.add([new AuthoringUnit({type:'text'})]);
+      expect(units.size()).to.equal(1);
     });
 
     it("Returns added units", function() {
