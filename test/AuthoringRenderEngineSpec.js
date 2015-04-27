@@ -1,11 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var simple = require('simple-mock');
-// reset a single functino spy in simple-mock, the brutal one-liner way, works for this spec's cases
-var reset = function(simpleSpy) {
-  simpleSpy.calls.length = simpleSpy.callCount = simpleSpy.called = simpleSpy.lastCall = 0;
-};
+var mocks = require('simple-mock');
 
 // Deps
 var bev = require('bev');
@@ -20,21 +16,19 @@ var UnitEditor1 = function(options) {
   unitEditors.push(this);
 
   bev.mixin(this);
-  var eventspy = this.eventspy = simple.spy(function() {});
+  var eventspy = this.eventspy = mocks.spy(function() {});
   this.on('all', eventspy);
 
   // try to follow the contract to avoid calls on undefined, and provide call logs for expectations
   var $el = this.$el = $('<p/>');
   this.model = options.model;
-  this.render = simple.spy(function() { return $el; });
+  this.render = mocks.spy(function() { return $el; });
 };
 
-var ContentModel1 = function() {
-  var calls = this.calls = [];
-  this.getView = function(au, options) {
-    this.calls.push(arguments);
+var contentModel1 = {
+  getView: mocks.spy(function(au, options) {
     return new UnitEditor1({model: au});
-  }
+  })
 };
 
 
@@ -45,7 +39,7 @@ module.exports = function interfaceSpec(required) {
   describe("Handle unit add", function() {
     var opt = {
       collection: new AuthoringCollection(),
-      contentModel: new ContentModel1()
+      contentModel: contentModel1
     };
     var renderEngine;
     var ue1;
@@ -53,12 +47,13 @@ module.exports = function interfaceSpec(required) {
 
     it("Should not render anything if the collection is empty", function() {
       renderEngine = new required(opt);
-      expect(opt.contentModel.calls).to.have.length(0);
+      expect(opt.contentModel.getView.calls).to.have.length(0);
     });
 
     it("Should create unit editors for existing units", function() {
       opt.collection.add(new AuthoringUnit({id:'1', type: 'type1'}));
-      expect(opt.contentModel.calls).to.have.length(1);
+      expect(opt.contentModel.getView.calls).to.have.length(1);
+      expect(opt.contentModel.getView.calls[0].args[0].attributes.id).to.equal('1');
       ue1 = unitEditors.pop();
       expect(ue1.model).to.equal(opt.collection.at(0));
     });
@@ -69,10 +64,10 @@ module.exports = function interfaceSpec(required) {
     });
 
     it("Should produce a unit editor for the new unit", function() {
-      reset(ue1.render);
-      opt.contentModel.calls.splice(0, opt.contentModel.calls.length);
+      ue1.render.reset();
+      opt.contentModel.getView.reset();
       opt.collection.add(new AuthoringUnit({id:'2', type: 'type1'}));
-      expect(opt.contentModel.calls).to.have.length(1);
+      expect(opt.contentModel.getView.calls).to.have.length(1);
       ue2 = unitEditors.pop();
       expect(ue2.model).to.equal(opt.collection.at(1));
     });
@@ -91,7 +86,7 @@ module.exports = function interfaceSpec(required) {
         gotit = true;
       });
       ue2.trigger('custom-event');
-      expect(gotit).to.be.true();
+      expect(gotit).to.be.true;
     });
 
   });
