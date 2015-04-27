@@ -1,7 +1,7 @@
 
 // select impl
-var AuthoringUnit = require('./unit/AuthoringUnitBackbone');
-var AuthoringCollection = require('./collection/AuthoringCollectionYobo');
+var AuthoringUnit = require('./unit/AuthoringUnitDefault');
+var AuthoringCollection = require('./collection/AuthoringCollectionDefault');
 
 var AuthoringMonitor = require('./collection/AuthoringMonitor');
 // deprecated name, looks like a collection impl

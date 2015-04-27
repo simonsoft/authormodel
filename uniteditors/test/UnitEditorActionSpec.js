@@ -4,17 +4,18 @@
 
 var expect = require('chai').expect;
 
+// Expect jquery to exist on downstream module
 var $ = require('jquery');
 
+// Expect rangy to exist on downstream module
 var rangy = require('rangy');
 rangy.init();
 
-var authormodel = require('authormodel');
-var ActionContext = authormodel.ActionContext;
+var ActionContext = require('../../actioncontext/ActionContext');
+var AuthoringUnit = require('../../unit/AuthoringUnitDefault');
 
 module.exports = function interfaceSpec(required) {
 
-  var AuthoringUnit = authormodel.AuthoringUnit;
   var UnitEditor = required.UnitEditor;
 
   // method not working properly with webpack tests, tests should be accurate,
