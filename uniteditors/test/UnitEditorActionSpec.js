@@ -39,12 +39,13 @@ module.exports = function interfaceSpec(required) {
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
+      var p = uniteditor.$p[0];
 
       var startIndex = 6;
       var endIndex = 9;
 
       var range = rangy.createRange();
-      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      range.setStartAndEnd(p.firstChild, startIndex, endIndex);
       rangy.getSelection().setSingleRange(range);
 
       expect(uniteditor.hasSelection()).to.be.true;
@@ -57,6 +58,7 @@ module.exports = function interfaceSpec(required) {
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
+      var p = uniteditor.$p[0];
 
       // unit 2
       var au2 = new AuthoringUnit({type: 'text', content: 'I WONT BE SELECTED'});
@@ -70,7 +72,7 @@ module.exports = function interfaceSpec(required) {
       // ACT
       // select on unit 1
       var range = rangy.createRange();
-      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      range.setStartAndEnd(p.firstChild, startIndex, endIndex);
       var sel = rangy.getSelection();
 
       // ASSERT
@@ -93,6 +95,7 @@ module.exports = function interfaceSpec(required) {
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
+      var p = uniteditor.$p[0];
 
       /** changed range to include the label areas,
        * but doesn't really work based on range.setStartAndEnd in this element
@@ -101,7 +104,7 @@ module.exports = function interfaceSpec(required) {
       var endIndex = 31;
 
       var range = rangy.createRange();
-      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      range.setStartAndEnd(p.firstChild, startIndex, endIndex);
       var sel = rangy.getSelection();
 
       sel.setSingleRange(range);
@@ -131,6 +134,7 @@ module.exports = function interfaceSpec(required) {
       var uniteditor = new UnitEditor({model: au});
       uniteditor.render();
       uniteditor.$el.appendTo($testcontent);
+      var p = uniteditor.$p[0];
 
       // unit 2
       var au2 = new AuthoringUnit({type: 'text', content: 'I WONT BE SELECTED'});
@@ -144,7 +148,7 @@ module.exports = function interfaceSpec(required) {
       // ACT
       // select on unit 1
       var range = rangy.createRange();
-      range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+      range.setStartAndEnd(p.firstChild, startIndex, endIndex);
       var sel = rangy.getSelection();
 
       // ASSERT
@@ -164,7 +168,7 @@ module.exports = function interfaceSpec(required) {
       it('Captures the keypress event', function() {
         var triggered = false;
         // instantiate uniteditor
-        uniteditor = new UnitEditor({model: au});
+        uniteditor = new UnitEditor({model: au}).render();
         expect(uniteditor.$el).to.exist;
 
         // fake keypress on uniteditor.$el
@@ -189,7 +193,7 @@ module.exports = function interfaceSpec(required) {
         });
 
         // create uniteditor
-        uniteditor = new UnitEditor({model: au});
+        uniteditor = new UnitEditor({model: au}).render();
 
         // append uniteditor.$el to parent
         $parent.append(uniteditor.$el);
@@ -207,7 +211,7 @@ module.exports = function interfaceSpec(required) {
         var authoractionTriggered = false;
 
         // create uniteditor
-        uniteditor = new UnitEditor({model: au});
+        uniteditor = new UnitEditor({model: au}).render();
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (){
@@ -231,7 +235,7 @@ module.exports = function interfaceSpec(required) {
         var authorintentEventContext;
 
         // create uniteditor
-        uniteditor = new UnitEditor({model: au});
+        uniteditor = new UnitEditor({model: au}).render();
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
@@ -255,7 +259,7 @@ module.exports = function interfaceSpec(required) {
         var authorintentEventContext;
         var au = new AuthoringUnit({type: 'text', content: '012345678901234567890'});
 
-        var uniteditor = new UnitEditor({model: au});
+        var uniteditor = new UnitEditor({model: au}).render();
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
@@ -299,6 +303,7 @@ module.exports = function interfaceSpec(required) {
         console.assert(!!uniteditor.$el);
         console.assert(!!uniteditor.el);
         uniteditor.$el.appendTo($testcontent);
+        var p = uniteditor.$p[0];
 
         // listen to authoraction on uniteditor (not uniteditor.$el)
         uniteditor.on('authorintent', function (context){
@@ -312,7 +317,7 @@ module.exports = function interfaceSpec(required) {
         var endIndex = 9;
 
         var range = rangy.createRange();
-        range.setStartAndEnd(uniteditor.el.firstChild, startIndex, endIndex);
+        range.setStartAndEnd(p.firstChild, startIndex, endIndex);
         var sel = rangy.getSelection();
 
         sel.setSingleRange(range);
@@ -341,7 +346,7 @@ module.exports = function interfaceSpec(required) {
       it('Exposes the DOM element through the selection range object', function() {
         var sel = result.get('selection');
         var unitEditor = result.getUnitEditor();
-        expect(sel.anchorNode).to.equal(unitEditor.el.firstChild);
+        expect(sel.anchorNode).to.equal(unitEditor.$p[0].firstChild);
       });
 
       xit('Sets the top level element because the selection might be in an inline', function() {
