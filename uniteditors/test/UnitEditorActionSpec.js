@@ -108,7 +108,12 @@ module.exports = function interfaceSpec(required) {
 
       // use the uniteditor API
       expect(uniteditor.getSelection()).to.exist;
-      expect(uniteditor.getSelection()).to.equal(rangy.getSelection());
+      // What defines a Rangy object?
+      var us = uniteditor.getSelection();
+      var rs = rangy.getSelection();
+      expect(us.rangeCount).to.equal(rs.rangeCount);
+      expect(us.anchorOffset).to.equal(rs.anchorOffset);
+      expect(us.focusOffset).to.equal(rs.focusOffset);
     });
 
     it('Returns undefined if there is no selection', function() {
