@@ -12,15 +12,17 @@ var AuthoringCollection = authormodel.AuthoringCollection;
 // Mocks, but if they get too complex we might want to use ContentModelFromTypeMap and UnitEditorFallback
 var unitEditors = [];
 var UnitEditor1 = function(options) {
+  var o = this;
   console.log('stub unit editor created', options);
-  unitEditors.push(this);
+  unitEditors.push(o);
 
-  bev.mixin(this);
+  bev.mixin(o);
 
   // try to follow the contract to avoid calls on undefined, and provide call logs for expectations
-  var $el = this.$el = $('<p/>');
-  this.model = options.model;
-  this.render = mocks.spy(function() { return $el; });
+  var $el = o.$el = $('<p/>');
+  $el.insertAfter = mocks.spy();
+  o.model = options.model;
+  o.render = mocks.spy(function() { return o; });
 };
 
 var ContentModel1 = function() {
