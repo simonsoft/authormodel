@@ -3,7 +3,7 @@ module.exports = {
 
   addAfter: function addAfter(newModel, referenceModel) {
     var ix = this.indexOf(referenceModel);
-    if (referenceModel < 0) {
+    if (ix < 0) {
       throw 'Reference model not found in collection';
     }
     if (this.contains(newModel)) {
