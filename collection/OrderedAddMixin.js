@@ -1,7 +1,7 @@
 
 module.exports = {
 
-  addAfter: function addAfter(newModel, referenceModel) {
+  addAfter: function addAfter(newModel, referenceModel, options) {
     var ix = this.indexOf(referenceModel);
     if (ix < 0) {
       throw 'Reference model not found in collection';
@@ -9,16 +9,18 @@ module.exports = {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    var added = this.add(newModel, {at:ix+1});
+    var options = _.extend({}, options, {at:ix+1})
+    var added = this.add(newModel, options);
     added.set('previous', referenceModel.id);
     return added;
   },
 
-  addFirst: function addFirst(newModel) {
+  addFirst: function addFirst(newModel, options) {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    var added = this.add(newModel, {at:0});
+    var options = _.extend({}, options, {at:0})
+    var added = this.add(newModel, options);
     return added;
   }
 
