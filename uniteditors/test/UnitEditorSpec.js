@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var AuthoringUnit = require('authormodel').AuthoringUnit;
+var AuthoringUnit = require('../../unit/AuthoringUnitDefault');
 
 module.exports = function interfaceSpec(required) {
 
@@ -47,6 +47,7 @@ module.exports = function interfaceSpec(required) {
       var au = new AuthoringUnit({type:'text', content:''});
       var ue = new UnitEditor({model: au});
       expect(ue.focus).is.a('function');
+      ue.render();
       ue.focus();
     });
 

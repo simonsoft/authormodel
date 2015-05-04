@@ -27,6 +27,7 @@ module.exports = function UnitEditorFallback(options) {
     } else {
       console.log('Fallback render', text);
     }
+    return this;
   };
 
 };

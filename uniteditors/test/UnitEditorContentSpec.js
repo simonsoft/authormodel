@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var mocks = require('simple-mock');
 
-var AuthoringUnit = require('authormodel').AuthoringUnit;
+var AuthoringUnit = require('../../unit/AuthoringUnitDefault');
 
 // tests for unit editors like a paragraph with 'content' attribute
 

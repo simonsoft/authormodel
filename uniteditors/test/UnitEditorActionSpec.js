@@ -4,17 +4,18 @@
 
 var expect = require('chai').expect;
 
+// Expect jquery to exist on downstream module
 var $ = require('jquery');
 
+// Expect rangy to exist on downstream module
 var rangy = require('rangy');
 rangy.init();
 
-var authormodel = require('authormodel');
-var ActionContext = authormodel.ActionContext;
+var ActionContext = require('../../actioncontext/ActionContext');
+var AuthoringUnit = require('../../unit/AuthoringUnitDefault');
 
 module.exports = function interfaceSpec(required) {
 
-  var AuthoringUnit = authormodel.AuthoringUnit;
   var UnitEditor = required.UnitEditor;
 
   // method not working properly with webpack tests, tests should be accurate,
@@ -107,7 +108,12 @@ module.exports = function interfaceSpec(required) {
 
       // use the uniteditor API
       expect(uniteditor.getSelection()).to.exist;
-      expect(uniteditor.getSelection()).to.equal(rangy.getSelection());
+      // What defines a Rangy object?
+      var us = uniteditor.getSelection();
+      var rs = rangy.getSelection();
+      expect(us.rangeCount).to.equal(rs.rangeCount);
+      expect(us.anchorOffset).to.equal(rs.anchorOffset);
+      expect(us.focusOffset).to.equal(rs.focusOffset);
     });
 
     it('Returns undefined if there is no selection', function() {
