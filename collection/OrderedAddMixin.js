@@ -1,4 +1,6 @@
 
+var _ = require('yobo')._;
+
 module.exports = {
 
   addAfter: function addAfter(newModel, referenceModel, options) {

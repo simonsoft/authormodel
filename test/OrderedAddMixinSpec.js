@@ -4,6 +4,8 @@ var expect = require('chai').expect;
 
 var OrderedAddMixin = require('../collection/OrderedAddMixin');
 
+var mocks = require('simple-mock');
+
 describe("Collection order", function() {
 
   var yobo = require('yobo');
@@ -51,6 +53,19 @@ describe("Collection order", function() {
       }).to.throw('Already a collection member');
     });
 
+    it("Supports Backbone style options as third argument", function() {
+      var collection = new Collection();
+      var onAdd = mocks.spy();
+      collection.on('add', onAdd);
+      var m0 = collection.add(asModel({id: 't0'}));
+      expect(onAdd.calls).to.have.length(1);
+      var m1 = collection.addAfter(asModel({id: 't1'}), m0, {custom:'x'});
+      expect(onAdd.calls).to.have.length(2);
+      expect(onAdd.calls[1].args[2].custom).to.equal('x');
+      var m2 = collection.addAfter(asModel({id: 't2'}), m0, {silent:true});
+      expect(onAdd.calls).to.have.length(2);
+    });
+
   });
 
   describe("#addFirst", function() {
@@ -74,6 +89,16 @@ describe("Collection order", function() {
       expect(function() {
         c2.addFirst(m4);
       }).to.throw('Already a collection member');
+    });
+
+    it("Supports Backbone style options as third argument", function() {
+      var collection = new Collection();
+      var onAdd = mocks.spy();
+      collection.on('add', onAdd);
+      var m0 = collection.addFirst(asModel({id: 't0'}), {custom:'y'});
+      expect(onAdd.calls[0].args[2].custom).to.equal('y');
+      var m0 = collection.addFirst(asModel({id: 't1'}), {silent:true});
+      expect(onAdd.calls).to.have.length(1);
     });
 
   });
