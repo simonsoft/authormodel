@@ -128,4 +128,97 @@ describe("AuthoringCollectionSerializeXml", function() {
 
   });
 
+  describe("Modification examples", function() {
+
+    var samplebase = './xml/test/';
+    var serializer = new AuthoringCollectionSerializerXml();
+
+    it("Could be changes to existing units", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      c.get('4v7jy6f173f0009').set('content', 'Model 782.');
+      c.get('4v7jy6f173f000k').set('content', 'Disconnect charger from mains supply.');
+
+      var xml = serializer.serialize(c);
+      //console.log('xml:', xml);
+    });
+
+    it("Could be additions after existing units", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      var unit = new AuthoringUnit({
+        type: 'p',
+        content: 'Model 783.'
+      });
+      unit.set('id', Date.now() + 'xyz' + '01'); // Currently missing id generator in authormodel
+
+      c.addAfter(unit, c.get('4v7jy6f173f0009'));
+
+      var xml = serializer.serialize(c);
+      //console.log('xml:', xml);
+    });
+
+    it("Could be additions after additions", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      var unit1 = new AuthoringUnit({
+        type: 'p',
+        content: 'Model 783.'
+      });
+      unit1.set('id', Date.now() + 'xyz' + '01'); // Currently missing id generator in authormodel
+      var unit2 = new AuthoringUnit({
+        type: 'p',
+        content: 'Model 786.'
+      });
+      unit2.set('id', Date.now() + 'xyz' + '02'); // Currently missing id generator in authormodel
+
+      c.addAfter(unit1, c.get('4v7jy6f173f0009'));
+      c.addAfter(unit2, unit1);
+
+      var xml = serializer.serialize(c);
+      //console.log('xml:', xml);
+    });
+
+    xit("Could be deletions, but units are kept marked as such", function() {
+
+    });
+
+    it("Could be combinations", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      c.get('4v7jy6f173f0006').set('content', 'Overheated batteries have caused downtime.');
+      c.get('4v7jy6f173f000x').set('content', 'Ensure full charge before first use.');
+
+      var unit1 = new AuthoringUnit({
+        type: 'p',
+        content: 'Model 783.'
+      });
+      unit1.set('id', Date.now() + 'xyz' + '01'); // Currently missing id generator in authormodel
+      var unit2 = new AuthoringUnit({
+        type: 'p',
+        content: 'Model 786.'
+      });
+      unit2.set('id', Date.now() + 'xyz' + '02'); // Currently missing id generator in authormodel
+
+      c.addAfter(unit1, c.get('4v7jy6f173f0009'));
+      c.addAfter(unit2, unit1);
+
+      var xml = serializer.serialize(c);
+      console.log('xml:\n', xml);
+    });
+
+  });
+
 });
