@@ -116,14 +116,14 @@ describe("AuthoringCollectionSerializeXml", function() {
 
     });
 
-    it("Parses sample1", function() {
+    it("Parses sample2", function() {
       var fs = require('fs');
       var samplefile = samplebase + 'sample2-servicebulletin.xml';
       var xml = fs.readFileSync(samplefile, 'utf8');
       var c = serializer.deserialize(xml);
 
       expect(c.at(0).get('id')).to.equal('4v7jy6f173f0001');
-      expect(c.at(21).get('id')).to.equal('4v7jy6f173f000x');
+      expect(c.at(22).get('id')).to.equal('4v7jy6f173f000x');
     });
 
   });
