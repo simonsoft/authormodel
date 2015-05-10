@@ -52,7 +52,7 @@ AuthoringCollectionSerializerXml.prototype.serialize = function(authoringCollect
 
 AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toCollection) {
 
-  var c = toCollection || new AuthoringCollection();
+  var c = new AuthoringCollection();
 
   var ns = {
     sed: 'http://www.simonsoft.se/namespace/editor'
@@ -101,6 +101,11 @@ AuthoringCollectionSerializerXml.prototype.deserialize = function(xmlString, toC
   if (i !== contentpending.length) {
     console.log(debug);
     throw new Error('Content extraction failed. Found ' + i + ' of ' + contentpending.length);
+  }
+
+  if (toCollection) {
+    toCollection.add(c.models);
+    c = toCollection;
   }
 
   return c;

@@ -1,6 +1,8 @@
 
 var expect = require('chai').expect;
 
+var mocks = require('simple-mock');
+
 describe("AuthoringCollectionSerializeXml", function() {
 
   var authormodel = require('../../');
@@ -124,6 +126,72 @@ describe("AuthoringCollectionSerializeXml", function() {
 
       expect(c.at(0).get('id')).to.equal('4v7jy6f173f0001');
       expect(c.at(22).get('id')).to.equal('4v7jy6f173f000x');
+    });
+
+    xit("Ideally maintains subsets based on start and end meta units");
+
+    xit("OR introduces section attributes that can be used with current subsetWhere feature", function() {
+    });
+
+    it("OR just leaves this to mvc for now", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      var title1 = c.at(0);
+      expect(title1.get('id')).to.equal('4v7jy6f173f0001');
+      expect(title1.get('type')).to.equal('title');
+      expect(title1.get('content')).to.equal('Service Bulletin');
+
+      var titleSection1 = c.get('4v7jy6f173f0005');
+      expect(titleSection1.get('type')).to.equal('title');
+      expect(titleSection1.get('content')).to.equal('Background');
+    });
+
+  });
+
+  describe("#deserialize to existing collection", function() {
+
+    var samplebase = './xml/test/';
+    var serializer = new AuthoringCollectionSerializerXml();
+
+    var collection = new AuthoringCollection();
+    var added = [];
+    var onAdd = mocks.spy(function(model) {
+      added.push(model.toJSON()); // clone attributes so we can assert later
+    });
+    var onChange = mocks.spy();
+    collection.on('add', onAdd);
+    collection.on('change', onChange);
+
+    it("Takes an optional second argument, the collection to deserialize to", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+
+      serializer.deserialize(xml, collection);
+    });
+
+    it("Produces add events", function() {
+      expect(onAdd.calls).to.have.length(24);
+    });
+
+    it("Does so in order of xml appearance", function() {
+      expect(added[0].id).to.equal('4v7jy6f173f0001');
+      expect(added[1].id).to.equal('4v7jy6f173f0002');
+      // meta units omitted
+      expect(added[2].id).to.equal('4v7jy6f173f0005');
+      expect(added[3].id).to.equal('4v7jy6f173f0006');
+    });
+
+    it("Does so when units are complete", function() {
+      expect(added[0].type).to.equal('title');
+      expect(added[0].content).to.equal('Service Bulletin');
+    });
+
+    it("Produces no change events during loading", function() {
+      expect(onChange.calls).to.have.length(0);
     });
 
   });
