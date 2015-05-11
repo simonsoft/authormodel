@@ -2,6 +2,9 @@
 var authormodel = require('../../');
 var AuthoringCollectionSerializer = require('../AuthoringCollectionSerializerXml');
 
+//var host = '';
+var host = 'https://ubuntu-cheftest1.pdsvision.net';
+
 var $ = require('jquery');
 var request = require('superagent');
 
@@ -11,7 +14,7 @@ var warn = function() {
 
 var verifyCmsConnect = function() {
   request
-    .get('/cms/rest/user3/repositorynames')
+    .get(host + '/cms/rest/user3/repositorynames')
     .end(function(err, res) {
       if (res.status == 200) {
         console.log('CMS responds as expected', res);
@@ -52,7 +55,7 @@ var prepare = function() {
     item: $('#item').val()
   };
   request
-    .get('/cms/rest/author/collection/prepare')
+    .get(host + '/cms/rest/author/collection/prepare')
     .query(query)
     .set('Accept', 'text/xml')
     .end(receiveXmlRaw);
