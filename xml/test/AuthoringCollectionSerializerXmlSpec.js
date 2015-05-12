@@ -266,8 +266,11 @@ describe("AuthoringCollectionSerializeXml", function() {
       var xml = fs.readFileSync(samplefile, 'utf8');
       var c = serializer.deserialize(xml);
 
-      c.get('4v7jy6f173f0006').set('content', 'Overheated batteries have caused downtime.');
-      c.get('4v7jy6f173f000x').set('content', 'Ensure full charge before first use.');
+      expect(c.get('4v7jy6f173f0007').get('content')).to.match(/^The lithium-ion/);
+      c.get('4v7jy6f173f0007').set('content', 'Overheated batteries have caused downtime.');
+
+      expect(c.get('4v7jy6f173f000y').get('content')).to.match(/^Connect/);
+      c.get('4v7jy6f173f000y').set('content', 'Ensure full charge before first use.');
 
       var unit1 = new AuthoringUnit({
         type: 'p',
@@ -280,7 +283,8 @@ describe("AuthoringCollectionSerializeXml", function() {
       });
       unit2.set('id', Date.now() + 'xyz' + '02'); // Currently missing id generator in authormodel
 
-      c.addAfter(unit1, c.get('4v7jy6f173f0009'));
+      expect(c.get('4v7jy6f173f000a').get('content')).to.equal('Model 781.');
+      c.addAfter(unit1, c.get('4v7jy6f173f000a'));
       c.addAfter(unit2, unit1);
 
       var xml = serializer.serialize(c);
