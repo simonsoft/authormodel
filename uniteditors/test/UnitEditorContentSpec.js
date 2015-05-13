@@ -60,7 +60,8 @@ module.exports = function interfaceSpec(required) {
       au.on('change', changed);
       au.on('change:content', changedContent);
       ue = new required.UnitEditor({model: au});
-      ue.$el.text('Some text');
+      ue.render();
+      ue.$p.text('Some text');
       expect(changed.called).to.be.false;
       expect(changedContent.called).to.be.false;
       ue.save();

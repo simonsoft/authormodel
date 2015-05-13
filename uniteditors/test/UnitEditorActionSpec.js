@@ -97,14 +97,13 @@ module.exports = function interfaceSpec(required) {
       uniteditor.$el.appendTo($testcontent);
       var p = uniteditor.$p[0];
 
-      /** changed range to include the label areas,
-       * but doesn't really work based on range.setStartAndEnd in this element
-       */
-      var startIndex = 29;
-      var endIndex = 31;
+      // We haven't got programmatic selection in the inline to work, so select second 789
+      var node = p.firstChild;
+      var startIndex = 17;
+      var endIndex = 20;
 
       var range = rangy.createRange();
-      range.setStartAndEnd(p.firstChild, startIndex, endIndex);
+      range.setStartAndEnd(node, startIndex, endIndex);
       var sel = rangy.getSelection();
 
       sel.setSingleRange(range);
