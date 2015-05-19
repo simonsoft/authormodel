@@ -13,7 +13,7 @@
     "simple-mock": "^0.2.9",
     "xmldom-xpath-wrapper": "0.0.9",
     "xmlbuilder": "^2.6.2",
-    "yobo": "^0.2.0"
+    "yobo": "~0.3.0"
   },
   "devDependencies": {
     "mocha": "^2.2.1"
