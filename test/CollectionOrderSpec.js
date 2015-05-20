@@ -103,4 +103,89 @@ describe("Collection order", function() {
 
   });
 
+  describe("#move", function() {
+
+    var Collection = require('../collection/AuthoringCollectionDefault');
+    var Model = require('../unit/AuthoringUnitDefault');
+
+    it("Takes a model and returns an object of possible rearrangements", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      expect(c.move).to.be.a('function');
+      var move = c.move(model1);
+      expect(move).to.be.an('object');
+    });
+
+    it("Does no action unless a chained function is invoked", function() {
+      var c = new Collection();
+      c.add(new Model({type:'text'}));
+      c.add(new Model({type:'text'}));
+      var state1 = c.toJSON();
+      c.move(c.at(1));
+      expect(c.toJSON()).to.deep.equal(state1);
+    });
+
+    it("For example collection.move(model2).up()", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      var model2 = c.add(new Model({type:'text'}));
+      var move = c.move(model2);
+      expect(move.up).to.be.a('function');
+      move.up();
+      expect(c.size()).to.equal(2);
+      expect(c.at(0)).to.equal(model2);
+      expect(c.at(1)).to.equal(model1);
+      expect(c.down).to.be.undefined;
+    });
+
+    it("collection.move(model1) defines #down but not #up", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      var model2 = c.add(new Model({type:'text'}));
+      var move = c.move(model1);
+      expect(move.up).to.be.undefined;
+      move.down();
+      expect(c.size()).to.equal(2);
+      expect(c.at(0)).to.equal(model2);
+      expect(c.at(1)).to.equal(model1);
+      expect(c.down).to.be.undefined;
+    });
+
+    xit("Throws error if the model is not in the collection", function() {
+      var c = new Collection();
+      expect(function() {
+        c.move(new Model({type: 'text'}));
+      }).to.throw('');
+    });
+
+    xit("Can move #toAfter", function() {
+
+    });
+
+    xit("Can move #first", function() {
+
+    });
+
+    xit("Existing move object does not reflect changes, so don't keep it", function() {
+
+    });
+
+  });
+
+  describe("#move keep", function() {
+
+    it("For example collection.move(model2).keep.up()", function() {
+
+    });
+
+    it("Markes the original as `deleted`=true and adds a clone as move", function() {
+
+    });
+
+    xit("Sets a `movedTo` reference to the added unit", function() {
+
+    });
+
+  });
+
 });

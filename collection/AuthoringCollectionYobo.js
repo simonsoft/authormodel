@@ -20,6 +20,9 @@ Collection.mixin(yobo.mixins.subset);
 var orderedAdd = require('./OrderedAddMixin');
 Collection.mixin(orderedAdd);
 
+var rearrangeMixin = require('./RearrangeMixin');
+Collection.mixin(rearrangeMixin);
+
 // Needed because subset isn't a real collection
 var subset = Collection.prototype.subset;
 var subsetWhere = Collection.prototype.subsetWhere;
@@ -31,7 +34,7 @@ var patchSubsetOrderedAdd = function(subsetFnProp) {
     var subset = subsetFn.apply(superset, arguments);
     subset.immerse = subset.immerse || function(model) { // yobo should define this
       var immerse = this._subset_immerse;
-      console.assert(!!immerse, 'Need subset to suppoert immerse-only fn for composition with addAfter');
+      console.assert(!!immerse, 'Need subset to support immerse-only fn for composition with addAfter');
       immerse(model);
     };
     subset.addAfter = function() {
