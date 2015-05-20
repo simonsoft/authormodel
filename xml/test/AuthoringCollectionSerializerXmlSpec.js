@@ -288,7 +288,7 @@ describe("AuthoringCollectionSerializeXml", function() {
       c.addAfter(unit2, unit1);
 
       var xml = serializer.serialize(c);
-      console.log('xml:\n', xml);
+      //console.log('xml:\n', xml);
     });
 
   });
