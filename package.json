@@ -1,6 +1,6 @@
 {
   "name": "authormodel",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "license": "Apache License 2.0",
   "repository": "https://github.com/simonsoft/authormodel",
   "main": "./index",
@@ -13,7 +13,7 @@
     "simple-mock": "^0.2.9",
     "xmldom-xpath-wrapper": "0.0.9",
     "xmlbuilder": "^2.6.2",
-    "yobo": "^0.2.0"
+    "yobo": "~0.3.0"
   },
   "devDependencies": {
     "mocha": "^2.2.1"
