@@ -9,14 +9,14 @@ To be used like
 describe("MyUnitEditor", function() {
 
   describe("implements UnitEditor", function() {
-    require('authormodel/uniteditors/test/UnitEditorSpec.js')(exports);
+    require('authormodel/uniteditors/itest/UnitEditorSpec.js')(exports);
   });
 
   describe("implements UnitEditor, is .content compatible", function() {
-    require('authormodel/uniteditors/test/UnitEditorContentSpec.js')(exports);
+    require('authormodel/uniteditors/itest/UnitEditorContentSpec.js')(exports);
   });
 
   describe("implements UnitEditor, actions spec", function() {
-    require('authormodel/uniteditors/test/UnitEditorActionSpec.js')(exports);
+    require('authormodel/uniteditors/itest/UnitEditorActionSpec.js')(exports);
   });
 ```
