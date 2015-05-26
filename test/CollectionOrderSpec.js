@@ -103,6 +103,15 @@ describe("Collection order", function() {
 
   });
 
+  describe("#delete", function() {
+
+    it("Does not exist, use .remove or .move(model).out() instead", function() {
+      var c = new Collection();
+      expect(c.delete).to.be.undefined;
+    });
+
+  });
+
   describe("#move", function() {
 
     var Collection = require('../collection/AuthoringCollectionDefault');
@@ -138,20 +147,27 @@ describe("Collection order", function() {
       expect(c.down).to.be.undefined;
     });
 
+    it("Delete through collection.move(model1).out()", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      c.move(model1).out();
+      expect(model1.get('deleted')).to.equal(true);
+    });
+
     xit("Keeps a stub in the original location with reference to the destination");
     xit("OR collaborates with ChangesMixin to just keep track of deleted there");
     xit("BUT actually we should maybe implement delete first");
 
     it("collection.move(model1) defines #down but not #up", function() {
       var c = new Collection();
-      var model1 = c.add(new Model({type:'text'}));
-      var model2 = c.add(new Model({type:'text'}));
+      var model1 = c.add(new Model({id:'1', type:'text'}));
+      var model2 = c.add(new Model({id:'2', type:'text'}));
       var move = c.move(model1);
       expect(move.up).to.be.undefined;
       move.down();
       expect(c.size()).to.equal(2);
-      expect(c.at(0)).to.equal(model2);
-      expect(c.at(1)).to.equal(model1);
+      expect(c.at(0).id).to.equal('2');
+      expect(c.at(1).id).to.equal('1');
       expect(c.down).to.be.undefined;
     });
 

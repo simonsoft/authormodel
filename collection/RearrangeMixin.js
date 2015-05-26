@@ -26,6 +26,10 @@ module.exports = {
     console.assert(!!this.addFirst, 'Ordered collection must define addFirst function');
     var move = {};
 
+    move.out = function moveDelete() {
+      model.set('deleted', true);
+    };
+
     var size = this.size();
     var pos = this.indexOf(model);
     if (pos < 0) {
