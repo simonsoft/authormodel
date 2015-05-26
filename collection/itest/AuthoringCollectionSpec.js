@@ -7,7 +7,7 @@ var mocks = require('simple-mock');
 module.exports = function interfaceSpec(required) {
 
   var AuthoringCollection = required;
-  var AuthoringUnit = require('../unit/AuthoringUnitBackbone');
+  var AuthoringUnit = require('../../unit/AuthoringUnitBackbone');
 
   describe("initialization without options", function() {
 
