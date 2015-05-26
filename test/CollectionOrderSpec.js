@@ -138,6 +138,10 @@ describe("Collection order", function() {
       expect(c.down).to.be.undefined;
     });
 
+    xit("Keeps a stub in the original location with reference to the destination");
+    xit("OR collaborates with ChangesMixin to just keep track of deleted there");
+    xit("BUT actually we should maybe implement delete first");
+
     it("collection.move(model1) defines #down but not #up", function() {
       var c = new Collection();
       var model1 = c.add(new Model({type:'text'}));
