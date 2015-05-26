@@ -11,6 +11,16 @@ module.exports = {
 
   // With object mixin syntax we can't validate that OrderedAddMixin has been added, but we do depend on it
 
+  // Backbone doesn't guard against ID conflicts, and it's easy to cause one with unit.clone()
+  add: function(model) {
+    if (model.id) {
+      var idmatch = this.get(model.id);
+      if (idmatch && idmatch !== model) {
+        throw new Error('Unit "' + model.id + '" is already a collection member');
+      }
+    }
+  },
+
   move: function(model) {
     console.assert(!!this.addAfter, 'Ordered collection must define addAfter function');
     console.assert(!!this.addFirst, 'Ordered collection must define addFirst function');
