@@ -28,21 +28,15 @@ describe("#changesSubset", function() {
     c.add(new Unit({type: 'test2'}));
     c.changesReset();
     expect(changed.size()).to.equal(0);
-
+    c.at(0).set('content', 'A');
+    expect(changed.size()).to.equal(1);
   });
 
   it("Doesn't matter when the subset was created, changes are tracked since creation/reset anyway", function() {
-
+    var c = new Collection();
+    c.add(new Unit({type: 'test1'}));
+    var changed = c.changesSubset();
+    expect(changed.size()).to.equal(1);
   });
-
-  it("#unit set is a change", function() {
-
-  });
-
-  it("#changes.reset is supposed to run after save", function() {
-
-  });
-
-  xit("#changes.exist could be a useful function");
 
 });

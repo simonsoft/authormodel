@@ -14,16 +14,20 @@ var markUnchanged = function markUnchanged(unit) {
 module.exports = {
 
   initialize: function() {
+    // These should be registered before any subset is created, which is a reasonable assumption for an initializer
     this.on('add', markChanged);
     this.on('change', markChanged);
   },
 
   changesSubset: function() {
-    return this.subset(filter);
+    var changes = this.subset(filter);
+    changes.listenTo(this, 'authormodelChangesReset', changes.refilter.bind(changes));
+    return changes;
   },
 
   changesReset: function() {
     this.each(markUnchanged);
+    this.trigger('authormodelChangesReset');
   }
 
 };
