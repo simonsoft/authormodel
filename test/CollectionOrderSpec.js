@@ -136,14 +136,13 @@ describe("Collection order", function() {
 
     it("For example collection.move(model2).up()", function() {
       var c = new Collection();
-      var model1 = c.add(new Model({type:'text'}));
-      var model2 = c.add(new Model({type:'text'}));
+      var model1 = c.add(new Model({id: 'u1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id: 'u2', type:'text', content: 'p2'}));
       var move = c.move(model2);
       expect(move.up).to.be.a('function');
       move.up();
-      expect(c.size()).to.equal(2);
-      expect(c.at(0)).to.equal(model2);
-      expect(c.at(1)).to.equal(model1);
+      expect(c.at(0).get('content')).to.equal('p2');
+      expect(c.at(1).get('content')).to.equal('p1');
       expect(c.down).to.be.undefined;
     });
 
@@ -154,53 +153,90 @@ describe("Collection order", function() {
       expect(model1.get('deleted')).to.equal(true);
     });
 
-    xit("Keeps a stub in the original location with reference to the destination");
+    it("Keeps the original location with deleted status", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({id: 'u1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id: 'u2', type:'text', content: 'p2'}));
+      var move = c.move(model2);
+      expect(move.up).to.be.a('function');
+      move.up();
+      expect(c.at(0).get('content')).to.equal('p2');
+      expect(c.at(1).get('content')).to.equal('p1');
+      expect(c.down).to.be.undefined;
+      var deleted = c.at(2);
+      expect(deleted.get('content')).to.equal('p2');
+      expect(deleted.get('deleted')).to.be.true;
+    });
     xit("OR collaborates with ChangesMixin to just keep track of deleted there");
-    xit("BUT actually we should maybe implement delete first");
+
+    xit("AuthoringUnit defines an isDeleted check"); // hide an abstraction + distinguish from collection.remove
 
     it("collection.move(model1) defines #down but not #up", function() {
       var c = new Collection();
-      var model1 = c.add(new Model({id:'1', type:'text'}));
-      var model2 = c.add(new Model({id:'2', type:'text'}));
+      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id:'2', type:'text', content: 'p2'}));
       var move = c.move(model1);
       expect(move.up).to.be.undefined;
       move.down();
-      expect(c.size()).to.equal(2);
-      expect(c.at(0).id).to.equal('2');
-      expect(c.at(1).id).to.equal('1');
-      expect(c.down).to.be.undefined;
+      expect(c.size()).to.equal(3);
+      expect(c.at(1).get('content')).to.equal('p2');
+      expect(c.at(2).get('content')).to.equal('p1');
     });
 
-    xit("Throws error if the model is not in the collection", function() {
+    it("Throws error if the model is not in the collection", function() {
       var c = new Collection();
       expect(function() {
         c.move(new Model({type: 'text'}));
       }).to.throw('');
     });
 
-    xit("Can move #toAfter", function() {
-
+    it("Can move #toAfter", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id:'2', type:'text', content: 'p2'}));
+      c.move(model1).toAfter(model2);
+      expect(c.size()).to.equal(3);
+      expect(c.at(2).get('content')).to.equal('p1');
     });
 
-    xit("Can move #first", function() {
-
+    it("Can move #first", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id:'2', type:'text', content: 'p2'}));
+      c.move(model2).first();
+      expect(c.size()).to.equal(3);
+      expect(c.at(0).get('content')).to.equal('p2');
     });
 
-    xit("Existing move object does not reflect changes, so don't keep it", function() {
+    // This is useful for internal robustness as well so let's expose it
+    it("Can move #toBefore", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1'}));
+      var model2 = c.add(new Model({id:'2', type:'text', content: 'p2'}));
+      c.move(model2).toBefore(model1);
+      expect(c.size()).to.equal(3);
+      expect(c.at(0).get('content')).to.equal('p2');
+    });
 
+    // The stateful move object is a problem if the collection changes between creation and execution
+    it("Existing move object does not reflect changes, so don't keep it", function(done) {
+      var c = new Collection();
+      var model1 = c.add(new Model({id:'1', type:'text'}));
+      var model2 = c.add(new Model({id:'2', type:'text'}));
+      var model3 = c.add(new Model({id:'3', type:'text'}));
+      var move = c.move(model2);
+      expect(move.up).to.exist;
+      expect(move.down).to.exist;
+      setTimeout(function() {
+        expect(move.up).to.throw();
+        expect(move.down).to.throw();
+        done();
+      },1);
     });
 
   });
 
   describe("#move keep", function() {
-
-    it("For example collection.move(model2).keep.up()", function() {
-
-    });
-
-    it("Markes the original as `deleted`=true and adds a clone as move", function() {
-
-    });
 
     xit("Sets a `movedTo` reference to the added unit", function() {
 

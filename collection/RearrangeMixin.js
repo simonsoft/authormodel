@@ -24,30 +24,65 @@ module.exports = {
   move: function(model) {
     console.assert(!!this.addAfter, 'Ordered collection must define addAfter function');
     console.assert(!!this.addFirst, 'Ordered collection must define addFirst function');
+
     var move = {};
 
     move.out = function moveDelete() {
-      model.set('deleted', true);
+      return model.set('deleted', true);
+    };
+
+    var add = this.add.bind(this);
+
+    var indexOf = (function(model) {
+      var pos = this.indexOf(model);
+      if (pos < 0) {
+        throw Error('Move attempted on model not in collection, ' + model.cid);
+      }
+      return pos;
+    }).bind(this);
+
+    var refMove = function(model, toPosition) {
+      var clone = model.clone();
+      clone.unset('id');
+      move.out();
+      add(clone, {at: toPosition});
+    };
+
+    move.toAfter = function moveToAfter(otherModel) {
+      refMove(model, indexOf(otherModel) + 1);
+    };
+
+    move.toBefore = function moveToBefore(otherModel) {
+      refMove(model, indexOf(otherModel));
+    };
+
+    move.first = function moveFirst() {
+      refMove(model, 0);
     };
 
     var size = this.size();
-    var pos = this.indexOf(model);
-    if (pos < 0) {
-      throw Error('Move attempted on model not in collection, ' + model.cid);
-    }
+    var pos = indexOf(model);
     if (pos < size - 1) {
+      var next = this.at(pos + 1);
       move.down = function() {
-
+        move.toAfter(next);
+      };
+    }
+    if (pos > 0) {
+      var prev = this.at(pos - 1);
+      move.up = function() {
+        move.toBefore(prev);
       };
     }
 
-    var keep = {};
-    for (var op in move) {
-      keep[op] = function moveKeep() {
-        move[op].call(this, defaultKeepOptions);
-      };
-    }
-    move.keep = keep;
+    // Ensure chaining is used immediately, until the impl above is more robust to incoming changes
+    setTimeout(function() {
+      for (var f in move) {
+        if (typeof move[f] === 'function') {
+          move[f] = function gone() { throw new Error('move object must be used immediately'); };
+        }
+      }
+    }, 1);
 
     return move;
   }
