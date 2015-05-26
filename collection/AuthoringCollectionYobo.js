@@ -20,6 +20,9 @@ Collection.mixin(yobo.mixins.subset);
 var orderedAdd = require('./OrderedAddMixin');
 Collection.mixin(orderedAdd);
 
+var changeTracking = require('./ChangesMixin');
+Collection.mixin(changeTracking);
+
 // Needed because subset isn't a real collection
 var subset = Collection.prototype.subset;
 var subsetWhere = Collection.prototype.subsetWhere;
