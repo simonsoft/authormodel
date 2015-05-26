@@ -24,7 +24,11 @@ describe("#changesSubset", function() {
   it("Contains any unit that got a #set done on it", function() {
     var c = new Collection();
     var changed = c.changesSubset();
-    expect('more impl needed').to.be.false;
+    c.add(new Unit({type: 'test1'}));
+    c.add(new Unit({type: 'test2'}));
+    c.changesReset();
+    expect(changed.size()).to.equal(0);
+
   });
 
   it("Doesn't matter when the subset was created, changes are tracked since creation/reset anyway", function() {

@@ -1,14 +1,14 @@
 
 var filter = function isChanged(unit) {
-  return !!unit._changed;
+  return !!unit._authormodelChanged;
 };
 
 var markChanged = function markChanged(unit) {
-  unit._changed = true;
+  unit._authormodelChanged = true;
 };
 
 var markUnchanged = function markUnchanged(unit) {
-  delete unit._changed;
+  delete unit._authormodelChanged;
 };
 
 module.exports = {
