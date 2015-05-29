@@ -27,11 +27,14 @@ module.exports = {
 
     var move = {};
 
-    move.out = function moveDelete() {
-      return model.set('deleted', true);
+    var add = this.add.bind(this);
+    var del = function(delmodel, options) {
+      return delmodel.set('deleted', true, options);
     };
 
-    var add = this.add.bind(this);
+    move.out = function moveDelete(options) {
+      return del(model, _.extend({modelDelete:true}, options));
+    };
 
     var indexOf = (function(model) {
       var pos = this.indexOf(model);
@@ -41,22 +44,22 @@ module.exports = {
       return pos;
     }).bind(this);
 
-    var refMove = function(model, toPosition) {
-      var clone = model.clone();
+    var refMove = function(refmodel, toPosition, options) {
+      var clone = refmodel.clone();
       clone.unset('id');
-      move.out();
-      add(clone, {at: toPosition});
+      del(refmodel, _.extend({modelMove:true}, options));
+      add(clone, _.extend({at:toPosition, modelMove:true}, options));
     };
 
-    move.toAfter = function moveToAfter(otherModel) {
-      refMove(model, indexOf(otherModel) + 1);
+    move.toAfter = function moveToAfter(otherModel, options) {
+      refMove(model, indexOf(otherModel) + 1, options);
     };
 
-    move.toBefore = function moveToBefore(otherModel) {
-      refMove(model, indexOf(otherModel));
+    move.toBefore = function moveToBefore(otherModel, options) {
+      refMove(model, indexOf(otherModel), options);
     };
 
-    move.first = function moveFirst() {
+    move.first = function moveFirst(options) {
       refMove(model, 0);
     };
 
@@ -64,14 +67,14 @@ module.exports = {
     var pos = indexOf(model);
     if (pos < size - 1) {
       var next = this.at(pos + 1);
-      move.down = function() {
-        move.toAfter(next);
+      move.down = function(options) {
+        move.toAfter(next, options);
       };
     }
     if (pos > 0) {
       var prev = this.at(pos - 1);
-      move.up = function() {
-        move.toBefore(prev);
+      move.up = function(options) {
+        move.toBefore(prev, options);
       };
     }
 

@@ -146,11 +146,38 @@ describe("Collection order", function() {
       expect(c.down).to.be.undefined;
     });
 
+    it("Emits delete and add events, with extra option modelMove:true", function() {
+      var c = new Collection();
+      var model0 = c.add(new Model({id: 0, type:'t', content: '-'}));
+      var model1 = c.add(new Model({id: 1, type:'t', content: 'x'}));
+      var model2 = c.add(new Model({id: 2, type:'t', content: 'y'}));
+      var events = mocks.spy();
+      c.on('add', events);
+      c.on('change:deleted', events);
+      c.move(model2).up({myoption: 'here'});
+      expect(events.calls).to.have.length(2);
+      expect(events.calls[0].args[0].get('deleted')).to.be.true;
+      expect(events.calls[1].args[2]).to.deep.equal({merge:false, add:true, remove:false, at:1, index:1, modelMove:true, myoption:'here'});
+    });
+
     it("Delete through collection.move(model1).out()", function() {
       var c = new Collection();
       var model1 = c.add(new Model({type:'text'}));
       c.move(model1).out();
       expect(model1.get('deleted')).to.equal(true);
+    });
+
+    it("Delete emits a change event instead of regular Backbone 'remove', extra option modelDelete:true", function() {
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      var remove = mocks.spy();
+      var change = mocks.spy();
+      c.on('remove', remove);
+      c.on('change:deleted', change);
+      c.move(model1).out({customoption: 'yes'});
+      expect(remove.calls).to.have.length(0);
+      expect(change.calls).to.have.length(1);
+      expect(change.lastCall.args[2]).to.exist.and.deep.equal({customoption: 'yes', modelDelete:true});
     });
 
     it("Keeps the original location with deleted status", function() {
