@@ -47,6 +47,11 @@ describe("Collection order", function() {
       expect(c.at(2)).to.equal(m2);
     });
 
+    it("Sets a 'previous' attribute", function() {
+      expect(m3.has('previous')).to.be.true;
+      expect(m3.get('previous')).to.be.a('string').and.equal('t1');
+    });
+
     it("Can't be used to re-arrange items already in the collection", function() {
       expect(function() {
         c.addAfter(m2, m3);
