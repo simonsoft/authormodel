@@ -27,6 +27,7 @@ module.exports = {
 
     var move = {};
 
+    var at = this.at.bind(this);
     var add = this.add.bind(this);
     var del = function(delmodel, options) {
       return delmodel.set('deleted', true, options);
@@ -44,23 +45,27 @@ module.exports = {
       return pos;
     }).bind(this);
 
-    var refMove = function(refmodel, toPosition, options) {
+    var refMove = function(refmodel, toPosition, options, previous) {
       var clone = refmodel.clone();
       clone.unset('id');
+      if (typeof previous !== 'undefined') {
+        clone.set('previous', previous);
+      }
       del(refmodel, _.extend({modelMove:true}, options));
       add(clone, _.extend({at:toPosition, modelMove:true}, options));
     };
 
     move.toAfter = function moveToAfter(otherModel, options) {
-      refMove(model, indexOf(otherModel) + 1, options);
+      refMove(model, indexOf(otherModel) + 1, options, otherModel.get('id'));
     };
 
     move.toBefore = function moveToBefore(otherModel, options) {
-      refMove(model, indexOf(otherModel), options);
+      var to = indexOf(otherModel);
+      refMove(model, to, options, !to ? false : at(to - 1).get('id'));
     };
 
     move.first = function moveFirst(options) {
-      refMove(model, 0);
+      refMove(model, 0, undefined, false);
     };
 
     var size = this.size();
