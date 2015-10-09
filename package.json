@@ -1,6 +1,6 @@
 {
   "name": "authormodel",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "license": "Apache License 2.0",
   "repository": "https://github.com/simonsoft/authormodel",
   "main": "./index",
