@@ -304,4 +304,38 @@ describe("Collection order", function() {
 
   });
 
+  describe("Using .opid mixin to generate id on created units", function() {
+
+    var Collection = require('../collection/AuthoringCollectionDefault');
+    var Model = require('../unit/AuthoringUnitDefault');
+    var c = new Collection();
+    var seq = 0;
+    c.opid = function(model) {
+      var op =  1000 + seq++;
+      if (typeof model !== 'undefined') {
+        model.set('id', op);
+      }
+      return op;
+    };
+
+    it("Sets id on addFirst", function() {
+      expect(c.addFirst(new Model({type: 't'})).get('id')).to.exist.and.equal(1000);
+      expect(c.get(1000).get('type')).to.equal('t');
+    });
+
+    it("Sets id on addAfter", function() {
+      expect(c.addAfter(new Model({type: 'u'}), c.at(0)).get('id')).to.exist.and.equal(1001);
+    });
+
+    it("Sets id on move().up()", function() {
+      c.move(c.at(1)).up();
+      expect(c.at(0).toJSON()).to.deep.include({type: 'u', id: 1002});
+    });
+
+    it("Does nothing on regular add (preserves default Backbone behavior)", function() {
+      expect(c.add(new Model({type: 't'})).has('id')).to.equal(false);
+    });
+
+  });
+
 });
