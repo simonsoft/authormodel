@@ -23,6 +23,7 @@ module.exports = {
     }
     var options = _.extend({}, options, {at:0})
     var added = this.add(newModel, options);
+    added.set('previous', false);
     return added;
   }
 
