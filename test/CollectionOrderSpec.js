@@ -90,6 +90,11 @@ describe("Collection order", function() {
       expect(c2.at(1)).to.equal(m4);
     });
 
+    it("Sets the 'previous' attribute to boolean false", function() {
+      expect(m4.has('previous')).to.be.true;
+      expect(m4.get('previous')).to.be.a('boolean').and.equal(false);
+    });
+
     it("Also doesn't accept already present models", function() {
       expect(function() {
         c2.addFirst(m4);
