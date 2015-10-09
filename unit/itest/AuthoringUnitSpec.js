@@ -54,4 +54,22 @@ module.exports = function interfaceSpec(required) {
 
   });
 
+  describe("#clone", function() {
+
+    it("Returns a unit with the same attributes", function() {
+      var unit1 = new AuthoringUnit({id: 1, type: 'some', blah: 'bläh'});
+      var unit2 = unit1.clone();
+      expect(unit2.get('type')).to.equal('some');
+      expect(unit2.get('blah')).to.equal('bläh');
+    });
+
+    it("Keeps ID on the clone because you might get surprised otherwise", function() {
+      var unit1 = new AuthoringUnit({id: 1, type: 'some', blah: 'bläh'});
+      var unit2 = unit1.clone();
+      expect(unit2.get('id')).to.equal(1);
+      expect(unit2.id).to.equal(1);
+    });
+
+  });
+
 };

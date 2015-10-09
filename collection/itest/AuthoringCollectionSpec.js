@@ -76,6 +76,21 @@ module.exports = function interfaceSpec(required) {
       expect(units.add(u)).to.equal(u);
     });
 
+    it("Throws Error if the ID already exists (which prevents Unit clones to be added foolishly)", function() {
+      var units = new AuthoringCollection();
+      var ux = units.add(new AuthoringUnit({type: 'noid'}));
+      units.add(ux.clone());
+      expect(units.size()).to.equal(2);
+      var u = units.add(new AuthoringUnit({id: '1a', type:'text'}));
+      var uc = u.clone();
+      expect(function() {
+        units.add(uc);
+      }).to.throw('Unit "1a" is already a collection member');
+      uc.set('id', undefined);
+      units.add(uc);
+      expect(units.size()).to.equal(4);
+    });
+
   });
 
   describe("addAfter", function() {
