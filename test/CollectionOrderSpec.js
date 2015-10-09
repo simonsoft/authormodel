@@ -279,6 +279,10 @@ describe("Collection order", function() {
       expect(model1.get('previous')).to.equal('2');
     });
 
+    it("A total of three units may get new 'previous' at move", function() {
+      expect("TODO").to.equal("implemented");
+    });
+
     it("Can move #first", function() {
       var c = new Collection();
       var model1 = c.add(new Model({id:'1', type:'text', content: 'p1', previous: false}));
