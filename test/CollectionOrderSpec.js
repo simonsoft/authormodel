@@ -47,6 +47,11 @@ describe("Collection order", function() {
       expect(c.at(2)).to.equal(m2);
     });
 
+    it("Sets a 'previous' attribute", function() {
+      expect(m3.has('previous')).to.be.true;
+      expect(m3.get('previous')).to.be.a('string').and.equal('t1');
+    });
+
     it("Can't be used to re-arrange items already in the collection", function() {
       expect(function() {
         c.addAfter(m2, m3);
@@ -85,6 +90,11 @@ describe("Collection order", function() {
       expect(c2.at(1)).to.equal(m4);
     });
 
+    it("Sets the 'previous' attribute to boolean false", function() {
+      expect(m4.has('previous')).to.be.true;
+      expect(m4.get('previous')).to.be.a('boolean').and.equal(false);
+    });
+
     it("Also doesn't accept already present models", function() {
       expect(function() {
         c2.addFirst(m4);
@@ -105,9 +115,27 @@ describe("Collection order", function() {
 
   describe("#delete", function() {
 
-    it("Does not exist, use .remove or .move(model).out() instead", function() {
+    it("Does not exist, use .move(model).out() instead", function() {
       var c = new Collection();
       expect(c.delete).to.be.undefined;
+    });
+
+  });
+
+  describe("#remove (don't use!)", function() {
+
+    it("Is in the backbone.js API but should normally be avoided in authormodel use", function() {
+      expect(c.remove).to.exist.and.be.a('function');
+    });
+
+    it("Behaves as in backbone, but if you do want to kill a unit use model.destroy instead", function() {
+      var Collection = require('../collection/AuthoringCollectionDefault');
+      var Model = require('../unit/AuthoringUnitDefault');
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      expect(c).to.have.length(1);
+      c.remove(model1);
+      expect(c).to.have.length(0);
     });
 
   });
@@ -144,6 +172,7 @@ describe("Collection order", function() {
       expect(c.at(0).get('content')).to.equal('p2');
       expect(c.at(1).get('content')).to.equal('p1');
       expect(c.down).to.be.undefined;
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     it("Emits delete and add events, with extra option modelMove:true", function() {
@@ -158,6 +187,7 @@ describe("Collection order", function() {
       expect(events.calls).to.have.length(2);
       expect(events.calls[0].args[0].get('deleted')).to.be.true;
       expect(events.calls[1].args[2]).to.deep.equal({merge:false, add:true, remove:false, at:1, index:1, modelMove:true, myoption:'here'});
+      expect(c.at(1).get('previous')).to.be.a('number').and.equal(0);
     });
 
     it("Delete through collection.move(model1).out()", function() {
@@ -224,6 +254,7 @@ describe("Collection order", function() {
       c.move(model1).toAfter(model2);
       expect(c.size()).to.equal(3);
       expect(c.at(2).get('content')).to.equal('p1');
+      expect(c.at(2).get('previous')).to.equal('2');
     });
 
     it("Can move #first", function() {
@@ -233,6 +264,7 @@ describe("Collection order", function() {
       c.move(model2).first();
       expect(c.size()).to.equal(3);
       expect(c.at(0).get('content')).to.equal('p2');
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     // This is useful for internal robustness as well so let's expose it
@@ -243,6 +275,7 @@ describe("Collection order", function() {
       c.move(model2).toBefore(model1);
       expect(c.size()).to.equal(3);
       expect(c.at(0).get('content')).to.equal('p2');
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     // The stateful move object is a problem if the collection changes between creation and execution
