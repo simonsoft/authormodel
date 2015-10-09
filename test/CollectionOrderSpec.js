@@ -105,9 +105,27 @@ describe("Collection order", function() {
 
   describe("#delete", function() {
 
-    it("Does not exist, use .remove or .move(model).out() instead", function() {
+    it("Does not exist, use .move(model).out() instead", function() {
       var c = new Collection();
       expect(c.delete).to.be.undefined;
+    });
+
+  });
+
+  describe("#remove (don't use!)", function() {
+
+    it("Is in the backbone.js API but should normally be avoided in authormodel use", function() {
+      expect(c.remove).to.exist.and.be.a('function');
+    });
+
+    it("Behaves as in backbone, but if you do want to kill a unit use model.destroy instead", function() {
+      var Collection = require('../collection/AuthoringCollectionDefault');
+      var Model = require('../unit/AuthoringUnitDefault');
+      var c = new Collection();
+      var model1 = c.add(new Model({type:'text'}));
+      expect(c).to.have.length(1);
+      c.remove(model1);
+      expect(c).to.have.length(0);
     });
 
   });
