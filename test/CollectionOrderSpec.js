@@ -71,6 +71,14 @@ describe("Collection order", function() {
       expect(onAdd.calls).to.have.length(2);
     });
 
+    it("Changes 'previous' attribute of the next unit", function() {
+      expect('TODO').to.equal('implemented');
+    });
+
+    it("Avoids setting 'previous' attribute of the next unit if it had no 'previous' before", function() {
+      expect('TODO').to.equal('implemented');
+    });
+
   });
 
   describe("#addFirst", function() {
@@ -111,6 +119,14 @@ describe("Collection order", function() {
       expect(onAdd.calls).to.have.length(1);
     });
 
+    it("Changes 'previous' attribute of the next unit", function() {
+      expect('TODO').to.equal('implemented');
+    });
+
+    it("Avoids setting 'previous' attribute of the next unit if it had no 'previous' before", function() {
+      expect('TODO').to.equal('implemented');
+    });
+
   });
 
   describe("#delete", function() {
@@ -136,6 +152,10 @@ describe("Collection order", function() {
       expect(c).to.have.length(1);
       c.remove(model1);
       expect(c).to.have.length(0);
+    });
+
+    it("Does not change 'previous' attribute of the next unit, so backend can detect misuse", function() {
+      expect('TODO').to.equal('implemented');
     });
 
   });
@@ -173,12 +193,13 @@ describe("Collection order", function() {
       expect(c.at(1).get('content')).to.equal('p1');
       expect(c.down).to.be.undefined;
       expect(model2.get('previous')).to.be.a('boolean').and.equal(false);
+      expect(model1.has('previous')).to.be.false; // had no 'previous' before
     });
 
     it("Emits delete and add events, with extra option modelMove:true", function() {
       var c = new Collection();
       var model0 = c.add(new Model({id: 0, type:'t', content: '-'}));
-      var model1 = c.add(new Model({id: 1, type:'t', content: 'x'}));
+      var model1 = c.add(new Model({id: 1, type:'t', content: 'x', previous: 0}));
       var model2 = c.add(new Model({id: 2, type:'t', content: 'y'}));
       var events = mocks.spy();
       c.on('add', events);
@@ -188,6 +209,7 @@ describe("Collection order", function() {
       expect(events.calls[0].args[0].get('deleted')).to.be.true;
       expect(events.calls[1].args[2]).to.deep.equal({merge:false, add:true, remove:false, at:1, index:1, modelMove:true, myoption:'here'});
       expect(model2.get('previous')).to.be.a('number').and.equal(0);
+      expect(model1.get('previous')).to.equal(2);
     });
 
     it("Delete through collection.move(model1).out()", function() {
@@ -259,12 +281,13 @@ describe("Collection order", function() {
 
     it("Can move #first", function() {
       var c = new Collection();
-      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1'}));
+      var model1 = c.add(new Model({id:'1', type:'text', content: 'p1', previous: false}));
       var model2 = c.add(new Model({id:'2', type:'text', content: 'p2'}));
       c.move(model2).first();
       expect(c.size()).to.equal(3);
       expect(c.at(0).get('content')).to.equal('p2');
       expect(model2.get('previous')).to.be.a('boolean').and.equal(false);
+      expect(model1.get('previous')).to.equal('2');
     });
 
     // This is useful for internal robustness as well so let's expose it
