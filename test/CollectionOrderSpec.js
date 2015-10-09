@@ -172,7 +172,7 @@ describe("Collection order", function() {
       expect(c.at(0).get('content')).to.equal('p2');
       expect(c.at(1).get('content')).to.equal('p1');
       expect(c.down).to.be.undefined;
-      expect(model2.get('previous')).to.be.a('boolean').and.equal(false);
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     it("Emits delete and add events, with extra option modelMove:true", function() {
@@ -187,7 +187,7 @@ describe("Collection order", function() {
       expect(events.calls).to.have.length(2);
       expect(events.calls[0].args[0].get('deleted')).to.be.true;
       expect(events.calls[1].args[2]).to.deep.equal({merge:false, add:true, remove:false, at:1, index:1, modelMove:true, myoption:'here'});
-      expect(model2.get('previous')).to.be.a('number').and.equal(0);
+      expect(c.at(1).get('previous')).to.be.a('number').and.equal(0);
     });
 
     it("Delete through collection.move(model1).out()", function() {
@@ -254,7 +254,7 @@ describe("Collection order", function() {
       c.move(model1).toAfter(model2);
       expect(c.size()).to.equal(3);
       expect(c.at(2).get('content')).to.equal('p1');
-      expect(model1.get('previous')).to.equal('2');
+      expect(c.at(2).get('previous')).to.equal('2');
     });
 
     it("Can move #first", function() {
@@ -264,7 +264,7 @@ describe("Collection order", function() {
       c.move(model2).first();
       expect(c.size()).to.equal(3);
       expect(c.at(0).get('content')).to.equal('p2');
-      expect(model2.get('previous')).to.be.a('boolean').and.equal(false);
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     // This is useful for internal robustness as well so let's expose it
@@ -275,7 +275,7 @@ describe("Collection order", function() {
       c.move(model2).toBefore(model1);
       expect(c.size()).to.equal(3);
       expect(c.at(0).get('content')).to.equal('p2');
-      expect(model2.get('previous')).to.be.a('boolean').and.equal(false);
+      expect(c.at(0).get('previous')).to.be.a('boolean').and.equal(false);
     });
 
     // The stateful move object is a problem if the collection changes between creation and execution
