@@ -10,7 +10,7 @@
   "dependencies": {
     "bev": "^1.0.0",
     "xmldom-xpath-wrapper": "0.0.9",
-    "xmlbuilder": "^2.6.2",
+    "xmlbuilder": "~3.1.0",
     "yobo": "~0.4.0"
   },
   "devDependencies": {
