@@ -86,10 +86,11 @@ module.exports = {
     }
 
     // Ensure chaining is used immediately, until the impl above is more robust to incoming changes
+    var gone = function gone() { throw new Error('move object must be used immediately'); };
     setTimeout(function() {
       for (var f in move) {
         if (typeof move[f] === 'function') {
-          move[f] = function gone() { throw new Error('move object must be used immediately'); };
+          move[f] = gone;
         }
       }
     }, 1);

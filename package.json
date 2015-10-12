@@ -5,7 +5,7 @@
   "repository": "https://github.com/simonsoft/authormodel",
   "main": "./index",
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/jshint collection/*.js && ./node_modules/.bin/mocha"
   },
   "dependencies": {
     "bev": "^1.0.0",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "chai": "^3.3.0",
+    "jshint": "^2.8.0",
     "mocha": "^2.3.3",
     "simple-mock": "^0.2.14",
     "xml-mapping": "^1.7.0"

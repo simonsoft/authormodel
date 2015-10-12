@@ -11,7 +11,7 @@ module.exports = {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    var options = _.extend({}, options, {at:ix+1});
+    options = _.extend({}, options, {at:ix+1});
     if (this.opid) this.opid(newModel);
     var added = this.add(newModel, options);
     added.set('previous', referenceModel.id);
@@ -22,7 +22,7 @@ module.exports = {
     if (this.contains(newModel)) {
       throw 'Already a collection member';
     }
-    var options = _.extend({}, options, {at:0});
+    options = _.extend({}, options, {at:0});
     if (this.opid) this.opid(newModel);
     var added = this.add(newModel, options);
     added.set('previous', false);
