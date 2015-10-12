@@ -29,6 +29,7 @@ module.exports = {
 
     var at = this.at.bind(this);
     var add = this.add.bind(this);
+    var opid = this.opid ? this.opid.bind(this) : function() {};
     var del = function(delmodel, options) {
       return delmodel.set('deleted', true, options);
     };
@@ -48,6 +49,7 @@ module.exports = {
     var refMove = function(refmodel, toPosition, options, previous) {
       var clone = refmodel.clone();
       clone.unset('id');
+      opid(clone);
       if (typeof previous !== 'undefined') {
         clone.set('previous', previous);
       }
