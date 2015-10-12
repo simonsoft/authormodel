@@ -1,6 +1,6 @@
 {
   "name": "authormodel",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "license": "Apache License 2.0",
   "repository": "https://github.com/simonsoft/authormodel",
   "main": "./index",
@@ -17,7 +17,6 @@
     "chai": "^3.3.0",
     "jshint": "^2.8.0",
     "mocha": "^2.3.3",
-    "simple-mock": "^0.2.14",
-    "xml-mapping": "^1.7.0"
+    "simple-mock": "^0.2.14"
   }
 }
