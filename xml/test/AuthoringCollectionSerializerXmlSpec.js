@@ -288,7 +288,20 @@ describe("AuthoringCollectionSerializeXml", function() {
       c.addAfter(unit2, unit1);
 
       var xml = serializer.serialize(c);
-      //console.log('xml:\n', xml);
+      expect(xml.replace(/[\r\n\t]/g,'')).to.contain('<sed:unit sed:id="4v7jy6f173f0007" sed:type="p"><sed:content>Overheated batteries have caused downtime.</sed:content></sed:unit>');
+    });
+
+  });
+
+  describe("Optional dirty-tracking and delta reconcile", function() {
+
+    it("Authormodel does not track modified state but it is trivial to opt-in using events", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      // TODO
     });
 
   });
