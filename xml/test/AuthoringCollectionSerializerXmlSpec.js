@@ -341,6 +341,39 @@ describe("AuthoringCollectionSerializeXml", function() {
         '<sed:unit sed:id="uid05" sed:type="p" sed:dirty="true" sed:previous="4v7jy6f173f000a"><sed:content>Model 783.</sed:content></sed:unit>' +
         '<sed:unit sed:id="4v7jy6f173f000y" sed:type="p" sed:dirty="true"><sed:content>Ensure full charge before first use.</sed:content></sed:unit>' +
         '</sed:authoring>');
+
+      // save with reset
+      if (!dirty.subsetDisconnect) {
+        dirty.subsetDisconnect = function() {
+          for (f in this._filters) {
+            delete this._filters[f];
+            // invalidateCacheForFilter(filterName) {
+            for (var cid in this._filterResultCache) {
+              if (this._filterResultCache.hasOwnProperty(cid)) {
+                delete this._filterResultCache[cid][f];
+              }
+            }
+            this.trigger('filtered:remove', f);
+          }
+        }
+      };
+      // the missing "keep my current models and never reconnect again"
+      dirty.subsetDisconnect();
+      dirty.forEach(function(model) {
+        //model.unset('dirty');
+        // apparently unset won't work on subset with the attribute we filter on
+        delete model.attributes.dirty;
+        // should, even if we disconnect, be same model instance
+        expect(c.get(model.cid).has('dirty')).to.be.false;
+      });
+      expect(c.where({dirty: true})).to.have.length(0);
+
+      var xml2 = serializer.serialize(dirty).replace(/[\r\n\t]/g,'');
+      expect(xml2).to.equal('<?xml version="1.0" encoding="UTF-8"?><sed:authoring xmlns:sed="http://www.simonsoft.se/namespace/editor">' +
+        '<sed:unit sed:id="4v7jy6f173f0007" sed:type="p"><sed:content>Overheated batteries have caused downtime.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="uid05" sed:type="p" sed:previous="4v7jy6f173f000a"><sed:content>Model 783.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="4v7jy6f173f000y" sed:type="p"><sed:content>Ensure full charge before first use.</sed:content></sed:unit>' +
+        '</sed:authoring>');
     });
 
   });
