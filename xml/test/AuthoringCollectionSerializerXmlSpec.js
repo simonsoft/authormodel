@@ -321,6 +321,7 @@ describe("AuthoringCollectionSerializeXml", function() {
       expect(c.get('4v7jy6f173f0007').get('content')).to.match(/^The lithium-ion/);
       c.get('4v7jy6f173f0007').set('content', 'Overheated batteries have caused downtime.');
       expect(dirty).to.have.length(1);
+      // silent:true isn't a requirement for dirty detection, but it seems to work so why not
 
       expect(c.get('4v7jy6f173f000y').get('content')).to.match(/^Connect/);
       c.get('4v7jy6f173f000y').set('content', 'Ensure full charge before first use.');
@@ -341,6 +342,10 @@ describe("AuthoringCollectionSerializeXml", function() {
         '<sed:unit sed:id="uid05" sed:type="p" sed:dirty="true" sed:previous="4v7jy6f173f000a"><sed:content>Model 783.</sed:content></sed:unit>' +
         '<sed:unit sed:id="4v7jy6f173f000y" sed:type="p" sed:dirty="true"><sed:content>Ensure full charge before first use.</sed:content></sed:unit>' +
         '</sed:authoring>');
+
+      // Complex stuff below; a better approacy may be
+      // new AuthoringCollection with .add(c.where({dirty:true}))
+      // to serialize, and then reset dirty state in c
 
       // save with reset
       if (!dirty.subsetDisconnect) {
