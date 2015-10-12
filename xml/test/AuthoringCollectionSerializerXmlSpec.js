@@ -210,8 +210,9 @@ describe("AuthoringCollectionSerializeXml", function() {
       c.get('4v7jy6f173f0009').set('content', 'Model 782.');
       c.get('4v7jy6f173f000k').set('content', 'Disconnect charger from mains supply.');
 
-      var xml = serializer.serialize(c);
-      //console.log('xml:', xml);
+      var xml = serializer.serialize(c).replace(/[\r\n\t]/g,'');
+      expect(xml).to.contain('sed:id="4v7jy6f173f0009" sed:type="title"><sed:content>Model 782.<');
+      expect(xml).to.contain('4v7jy6f173f000k" sed:type="p"><sed:content>Disconnect charger from mains supply.<');
     });
 
     it("Could be additions after existing units", function() {
@@ -228,8 +229,10 @@ describe("AuthoringCollectionSerializeXml", function() {
 
       c.addAfter(unit, c.get('4v7jy6f173f0009'));
 
-      var xml = serializer.serialize(c);
-      //console.log('xml:', xml);
+      var xml = serializer.serialize(c).replace(/[\r\n\t]/g,'');
+      xml = xml.substring(xml.indexOf('id="4v7jy6f173f0009"'), xml.indexOf('Model 783.') + 10);
+      expect(xml).to.contain('id="4v7jy6f173f0009" sed:type="title"><sed:content>Applicability</sed:content></sed:unit>' +
+        '<sed:unit sed:id="' + unit.get('id') + '" sed:type="p" sed:previous="4v7jy6f173f0009"><sed:content>Model 783.');
     });
 
     it("Could be additions after additions", function() {
@@ -242,66 +245,102 @@ describe("AuthoringCollectionSerializeXml", function() {
         type: 'p',
         content: 'Model 783.'
       });
-      unit1.set('id', Date.now() + 'xyz' + '01'); // Currently missing id generator in authormodel
+      unit1.set('id', 'xyz' + '01');
       var unit2 = new AuthoringUnit({
         type: 'p',
         content: 'Model 786.'
       });
-      unit2.set('id', Date.now() + 'xyz' + '02'); // Currently missing id generator in authormodel
+      unit2.set('id', 'xyz' + '02');
 
       c.addAfter(unit1, c.get('4v7jy6f173f0009'));
       c.addAfter(unit2, unit1);
 
-      var xml = serializer.serialize(c);
-      //console.log('xml:', xml);
+      var xml = serializer.serialize(c).replace(/[\r\n\t]/g,'');
+      xml = xml.substring(xml.indexOf('xyz01'), xml.indexOf('Model 786.<') + 11);
+      expect(xml).to.contain('xyz01" sed:type="p" sed:previous="4v7jy6f173f0009"><sed:content>Model 783.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="xyz02" sed:type="p" sed:previous="xyz01"><sed:content>Model 786.<');
     });
 
-    xit("Could be deletions, but units are kept marked as such", function() {
-
-    });
-
-    it("Could be combinations", function() {
+    it("Multiple additions after the same unit are reflected in order but not 'previous'", function() {
       var fs = require('fs');
       var samplefile = samplebase + 'sample2-servicebulletin.xml';
       var xml = fs.readFileSync(samplefile, 'utf8');
       var c = serializer.deserialize(xml);
 
-      expect(c.get('4v7jy6f173f0007').get('content')).to.match(/^The lithium-ion/);
-      c.get('4v7jy6f173f0007').set('content', 'Overheated batteries have caused downtime.');
-
-      expect(c.get('4v7jy6f173f000y').get('content')).to.match(/^Connect/);
-      c.get('4v7jy6f173f000y').set('content', 'Ensure full charge before first use.');
+      // same as the test above but with an id generator
+      var opidc = 1;
+      c.opid = function(model) {
+        model.set('id', 'xyz0' + opidc);
+        return 'xyz0' + opidc++;
+      };
 
       var unit1 = new AuthoringUnit({
         type: 'p',
         content: 'Model 783.'
       });
-      unit1.set('id', Date.now() + 'xyz' + '01'); // Currently missing id generator in authormodel
       var unit2 = new AuthoringUnit({
         type: 'p',
         content: 'Model 786.'
       });
-      unit2.set('id', Date.now() + 'xyz' + '02'); // Currently missing id generator in authormodel
 
-      expect(c.get('4v7jy6f173f000a').get('content')).to.equal('Model 781.');
-      c.addAfter(unit1, c.get('4v7jy6f173f000a'));
-      c.addAfter(unit2, unit1);
+      c.addAfter(unit1, c.get('4v7jy6f173f0009'));
+      c.addAfter(unit2, c.get('4v7jy6f173f0009'));
 
-      var xml = serializer.serialize(c);
-      expect(xml.replace(/[\r\n\t]/g,'')).to.contain('<sed:unit sed:id="4v7jy6f173f0007" sed:type="p"><sed:content>Overheated batteries have caused downtime.</sed:content></sed:unit>');
+      var xml = serializer.serialize(c).replace(/[\r\n\t]/g,'');
+      xml = xml.substring(xml.indexOf('4v7jy6f173f0009'), xml.indexOf('4v7jy6f173f000a'));
+      expect(xml).to.contain('4v7jy6f173f0009" sed:type="title"><sed:content>Applicability</sed:content></sed:unit>' +
+        '<sed:unit sed:id="xyz02" sed:type="p" sed:previous="4v7jy6f173f0009"><sed:content>Model 786.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="xyz01" sed:type="p" sed:previous="4v7jy6f173f0009"><sed:content>Model 783.</sed:content></sed:unit><sed:unit sed:id="');
     });
 
-  });
-
-  describe("Optional dirty-tracking and delta reconcile", function() {
-
-    it("Authormodel does not track modified state but it is trivial to opt-in using events", function() {
+    it("Could be deletions, but units are kept marked as such", function() {
       var fs = require('fs');
       var samplefile = samplebase + 'sample2-servicebulletin.xml';
       var xml = fs.readFileSync(samplefile, 'utf8');
       var c = serializer.deserialize(xml);
 
-      // TODO
+      c.move(c.get('4v7jy6f173f0006')).out();
+
+      var xml = serializer.serialize(c).replace(/[\r\n\t]/g,'');
+      expect(xml).to.contain('<sed:unit sed:id="4v7jy6f173f0006" sed:type="p" sed:deleted="true"><sed:content>Charging');
+    });
+
+    it("Supports custom dirty tracking using add+change events", function() {
+      var fs = require('fs');
+      var samplefile = samplebase + 'sample2-servicebulletin.xml';
+      var xml = fs.readFileSync(samplefile, 'utf8');
+      var c = serializer.deserialize(xml);
+
+      // opt-in dirty tracking
+      c.on('add change', function(model) {
+        model.set('dirty', true, {silent:true});
+      });
+      var dirty = c.subsetWhere({dirty: true});
+      expect(dirty).to.have.length(0);
+
+      expect(c.get('4v7jy6f173f0007').get('content')).to.match(/^The lithium-ion/);
+      c.get('4v7jy6f173f0007').set('content', 'Overheated batteries have caused downtime.');
+      expect(dirty).to.have.length(1);
+
+      expect(c.get('4v7jy6f173f000y').get('content')).to.match(/^Connect/);
+      c.get('4v7jy6f173f000y').set('content', 'Ensure full charge before first use.');
+      expect(dirty).to.have.length(2);
+
+      var unit1 = new AuthoringUnit({
+        id: 'uid05',
+        type: 'p',
+        content: 'Model 783.'
+      });
+      expect(c.get('4v7jy6f173f000a').get('content')).to.equal('Model 781.');
+      c.addAfter(unit1, c.get('4v7jy6f173f000a'));
+      expect(dirty).to.have.length(3);
+
+      var xml = serializer.serialize(dirty).replace(/[\r\n\t]/g,'');
+      expect(xml).to.equal('<?xml version="1.0" encoding="UTF-8"?><sed:authoring xmlns:sed="http://www.simonsoft.se/namespace/editor">' +
+        '<sed:unit sed:id="4v7jy6f173f0007" sed:type="p" sed:dirty="true"><sed:content>Overheated batteries have caused downtime.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="uid05" sed:type="p" sed:dirty="true" sed:previous="4v7jy6f173f000a"><sed:content>Model 783.</sed:content></sed:unit>' +
+        '<sed:unit sed:id="4v7jy6f173f000y" sed:type="p" sed:dirty="true"><sed:content>Ensure full charge before first use.</sed:content></sed:unit>' +
+        '</sed:authoring>');
     });
 
   });
